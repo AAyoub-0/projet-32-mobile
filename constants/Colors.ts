@@ -1,19 +1,23 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+// Desc: Colors for the application
 
-export default {
-  light: {
-    text: '#000',
-    background: '#fff',
-    tint: tintColorLight,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
-  },
-  dark: {
-    text: '#fff',
-    background: '#000',
-    tint: tintColorDark,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorDark,
-  },
-};
+export const colorPrimary = '#001489'
+
+export const colorSecondary = '#5342A2'
+
+export const colorSuccess = '#2F80ED'
+export const colorSuccessLight = '#2F80ED50'
+
+export const colorWarning = '#F2994A'
+
+export const colorDanger = '#EB5757'
+
+export const colorBorder = '#252525'
+export const colorBorderLight = '#25252550'
+
+export const colorWhite = '#fff'
+
+export const colorBlack = '#0C0C0C'
+export const colorBlackLight = '#1D1D1D'
+export const colorBlackLight2 = '#1D1D1D80'
+
+export const colorGray = '#8E8E8E'

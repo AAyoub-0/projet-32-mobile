@@ -1,59 +1,56 @@
 import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Tabs } from 'expo-router';
+import { FontAwesome } from '@expo/vector-icons';
+import * as Colors from '../../constants/Colors';
+import * as Texts from '../../constants/Texts';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+    <Tabs screenOptions={{ tabBarStyle: {
+      backgroundColor: Colors.colorWhite,
+      shadowColor: Colors.colorBorder,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 4,
+      borderTopWidth: 2,
+      paddingHorizontal: 10,
+    }}}>
+      <Tabs.Screen name="accueil" options={{ tabBarIcon: () => (
+        <FontAwesome name="home" size={28} color={Colors.colorPrimary} />
+      ), tabBarLabelStyle: {
+        ...Texts.textLink
+      }}} />
+      <Tabs.Screen name="materiel" options={{ tabBarIcon: () => (
+        <FontAwesome name="wrench" size={28} color={Colors.colorPrimary} />
+      ), tabBarLabelStyle: {
+        ...Texts.textLink
+      }}} />
+      <Tabs.Screen name="demande" options={{ tabBarIcon: () => (
+        <FontAwesome name="plus" size={28} color={Colors.colorPrimary} />
+      ), tabBarLabelStyle: {
+        ...Texts.textLink
+      }}} />
+      <Tabs.Screen name="actualites" options={{ tabBarIcon: () => (
+        <FontAwesome name="newspaper-o" size={28} color={Colors.colorPrimary} />
+      ), tabBarLabelStyle: {
+        ...Texts.textLink
+      }}} />
+      <Tabs.Screen name="calendrier" options={{ tabBarIcon: () => (
+        <FontAwesome name="calendar" size={28} color={Colors.colorPrimary} />
+      ), tabBarLabelStyle: {
+        ...Texts.textLink
+      }}} />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
