@@ -17,32 +17,28 @@ export default function TabLayout() {
       shadowRadius: 4,
       borderTopWidth: 2,
       paddingHorizontal: 10,
+      paddingVertical: 5,
+    }, 
+    tabBarActiveTintColor: Colors.colorPrimary,
+    tabBarInactiveTintColor: Colors.colorPrimaryLight,
+    tabBarLabelStyle: {
+      fontSize: 11,
     }}}>
-      <Tabs.Screen name="accueil" options={{ tabBarIcon: () => (
-        <FontAwesome name="home" size={28} color={Colors.colorPrimary} />
-      ), tabBarLabelStyle: {
-        ...Texts.textLink
-      }}} />
-      <Tabs.Screen name="materiel" options={{ tabBarIcon: () => (
-        <FontAwesome name="wrench" size={28} color={Colors.colorPrimary} />
-      ), tabBarLabelStyle: {
-        ...Texts.textLink
-      }}} />
-      <Tabs.Screen name="demande" options={{ tabBarIcon: () => (
-        <FontAwesome name="plus" size={28} color={Colors.colorPrimary} />
-      ), tabBarLabelStyle: {
-        ...Texts.textLink
-      }}} />
-      <Tabs.Screen name="actualites" options={{ tabBarIcon: () => (
-        <FontAwesome name="newspaper-o" size={28} color={Colors.colorPrimary} />
-      ), tabBarLabelStyle: {
-        ...Texts.textLink
-      }}} />
-      <Tabs.Screen name="calendrier" options={{ tabBarIcon: () => (
-        <FontAwesome name="calendar" size={28} color={Colors.colorPrimary} />
-      ), tabBarLabelStyle: {
-        ...Texts.textLink
-      }}} />
+      <Tabs.Screen name="accueil" options={{ tabBarIcon: ({ color }) => (
+        <FontAwesome name="home" size={28} color={color} />
+      ), title: "Accueil"}} />
+      <Tabs.Screen name="materiel" options={{ tabBarIcon: ({ color }) => (
+        <FontAwesome name="wrench" size={28} color={color} />
+      ), title: "Matériel"}} />
+      <Tabs.Screen name="demande" options={{ tabBarIcon: ({ color }) => (
+        <FontAwesome name="plus" size={28} color={color} />
+      ), title: "Réserver"}} />
+      <Tabs.Screen name="actualites" options={{ tabBarIcon: ({ color }) => (
+        <FontAwesome name="newspaper-o" size={28} color={color} />
+      ), title: "Actualités"}} />
+      <Tabs.Screen name="calendrier" options={{ tabBarIcon: ({ color }) => (
+        <FontAwesome name="calendar" size={28} color={color} />
+      ), title: "Calendrier"}} />
     </Tabs>
   );
 }

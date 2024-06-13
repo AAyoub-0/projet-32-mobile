@@ -41,7 +41,7 @@ const TextInputFlat: React.FC<Props> = ({ placeholder, value,
                 paddingHorizontal: 10,
                 paddingVertical: 15}}
             placeholder={placeholder}
-            placeholderTextColor={Colors.colorBlackLight}
+            placeholderTextColor={Colors.colorBlackLight2}
             value={value}
             onChangeText={onChangeText}
             secureTextEntry={secureTextEntry}

@@ -2,6 +2,8 @@
 
 export const colorPrimary = '#001489'
 
+export const colorPrimaryLight = '#0014899'
+
 export const colorSecondary = '#5342A2'
 
 export const colorSuccess = '#2F80ED'
