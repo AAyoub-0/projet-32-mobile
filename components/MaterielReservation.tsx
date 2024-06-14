@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, StyleProp } from "react-native";
+import { StyleSheet, View, Text, StyleProp, TouchableOpacity } from "react-native";
 
 import * as Texts from '../constants/Texts';
 import * as Colors from '../constants/Colors';
@@ -15,7 +15,7 @@ const MaterielReservation: React.FC<Props> = ({ text, style = {} }) => {
             <Text style={[Texts.textBodySmall, Texts.textBold, {color: Colors.colorPrimary}]}>
                 { text }
             </Text>
-            <Text style={[Texts.textBig, Texts.textBold, {
+            <TouchableOpacity style={{
                 backgroundColor: Colors.colorWarning,
                 padding: 5,
                 position: 'absolute',
@@ -24,10 +24,11 @@ const MaterielReservation: React.FC<Props> = ({ text, style = {} }) => {
                 shadowColor: Colors.colorBlack,
                 shadowOffset: { width: 0, height: 2 },
                 shadowOpacity: 0.25,
-                shadowRadius: 1.025,
-                }]}>
-                Réserver {">"}
-            </Text>
+                shadowRadius: 1.025,}}>
+                <Text style={[Texts.textBig, Texts.textBold]}>
+                    Réserver {">"}
+                </Text>
+            </TouchableOpacity>
         </View>
     )
 }
