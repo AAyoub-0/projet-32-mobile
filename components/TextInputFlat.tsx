@@ -1,4 +1,5 @@
-import { ColorValue, TextInput } from 'react-native';
+import { ColorValue, TextInput, View } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 
 import * as Colors from '../constants/Colors';
 
@@ -15,7 +16,10 @@ type Props = {
     autoFocus?: boolean;
     border?: Array<number>;
     borderLight?: boolean;
+    borderRadius?: number;
     backgroundColor?: ColorValue;
+    rightIcon?: any;
+    leftIcon?: any;
 }
 
 let _borderColors: ColorValue;
@@ -23,21 +27,28 @@ let _borderColors: ColorValue;
 const TextInputFlat: React.FC<Props> = ({ placeholder, value, 
     onChangeText, secureTextEntry, keyboardType, border = [1, 1, 0, 0],
     multiline, numberOfLines, maxLength, height = undefined, autoFocus, borderLight = false,
-    backgroundColor = Colors.colorWhite }) => {
+    backgroundColor = Colors.colorWhite, borderRadius = 0, rightIcon, leftIcon }) => {
         
     if (borderLight) _borderColors = Colors.colorBorderLight;
     else _borderColors = Colors.colorWhite;
 
+    if (!height) height = 50;
+    let iconTop = height / 2 - 12;
+
     return (
-        <TextInput
+        <View>
+            {leftIcon && <FontAwesome name={leftIcon} size={24} color={Colors.colorGray} style={{position: 'absolute', right: 10, top: 15}} />}
+            <TextInput
             style={{ height: height, borderColor: 'gray', 
                 borderWidth: 1,
                 borderTopColor: border[0] === 1 ? Colors.colorBorderLight : 'transparent', 
                 borderBottomColor: border[1] === 1 ? Colors.colorBorderLight : 'transparent',
                 borderLeftColor: border[2] === 1 ? Colors.colorBorderLight : 'transparent',
                 borderRightColor: border[3] === 1 ? Colors.colorBorderLight : 'transparent',
+                borderRadius: borderRadius,
                 color: Colors.colorBlackLight,
                 backgroundColor: backgroundColor, 
+                width: '100%',
                 paddingHorizontal: 10,
                 paddingVertical: 15}}
             placeholder={placeholder}
@@ -50,7 +61,9 @@ const TextInputFlat: React.FC<Props> = ({ placeholder, value,
             numberOfLines={numberOfLines}
             maxLength={maxLength}
             autoFocus={autoFocus}
-        />
+            />
+            {rightIcon && <FontAwesome name={rightIcon} size={24} color={Colors.colorGray} style={{position: 'absolute', right: iconTop, top: iconTop}} />}
+        </View>
     )
 }
 export default TextInputFlat;

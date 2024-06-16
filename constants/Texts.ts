@@ -25,6 +25,10 @@ export const textSubtitle = {
     fontSize: 15,
 };
 
+export const textBodyPrimary = {
+    color: Colors.colorPrimary,
+    fontSize: 16,
+};
 export const textBody = {
     color: Colors.colorBlackLight,
     fontSize: 16,

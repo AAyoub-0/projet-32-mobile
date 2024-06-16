@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 
 import * as Texts from '../constants/Texts';
 import * as Colors from '../constants/Colors';
@@ -6,19 +6,24 @@ import * as Colors from '../constants/Colors';
 import { Materiel } from '../models/Materiel';
 
 type Props = {
-    materiel: Materiel
+    materiel: Materiel,
+    showPrice?: boolean,
+    disabled?: boolean
 }
 
-const MaterielComponent: React.FC<Props> = ({ materiel }) => {
+const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, disabled }) => {
     return (
-        <View style={styles.materiel}>
+        <TouchableOpacity style={styles.materiel} disabled={disabled}>
             <Image style={{ width: 97, height: 94, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} 
                     source={{ uri: materiel.imageUrl }} />
             <View style={{ justifyContent: 'space-between', paddingHorizontal: 12, paddingVertical: 8, flex: 1 }}>
                 <Text style={[Texts.textBody, Texts.textSemiBold]}>{materiel.libelle}</Text>
-                <Text style={[Texts.textCaption, Texts.textSemiBold]}>Quantité : {materiel.nbExemplairesDisponibles}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={[Texts.textCaption, Texts.textSemiBold]}>Quantité : {materiel.nbExemplairesDisponibles}</Text>
+                    {(showPrice && materiel.prix) && <Text style={[Texts.textCaptionBlue, Texts.textSemiBold]}>Prix : {materiel.prix} € / Weekend</Text>}
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 export default MaterielComponent;
