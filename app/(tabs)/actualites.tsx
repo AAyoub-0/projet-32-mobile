@@ -57,8 +57,7 @@ const Actualites = () => {
 
     const handleSelected = (selected: number) => {
         setSelected(selected);
-        handleSelectedMonth(evenementsByYear.find(e => e.year === selected)?.months || []);
-        console.log(selectedMonth);
+        handleSelectedMonth([...new Set(evenementsByYear.find(e => e.year === selected)?.months)] || []);
     }
 
     const handleSelectedMonth = (selected: Array<number>) => {
