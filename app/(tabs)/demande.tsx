@@ -6,27 +6,27 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from "expo-router";
 
 // constants
-import * as Colors from '../../constants/Colors';
-import * as Texts from '../../constants/Texts';
+import * as Colors from '@/constants/Colors';
+import * as Texts from '@/constants/Texts';
 
 // components
-import DernieresActualite from '../../components/DerniereActualite';
-import ActualiteFuture from '../../components/ActualiteFuture';
-import Line from '../../components/Line';
-import TextInputFlat from '../../components/TextInputFlat';
+import DernieresActualite from '@/components/DerniereActualite';
+import ActualiteFuture from '@/components/ActualiteFuture';
+import Line from '@/components/Line';
+import TextInputFlat from '@/components/TextInputFlat';
 import MaterielComponent from "@/components/MaterielComponent";
 
 // views
-import ActualitesView from '../../views/ActualitesView';
-import ComiteView from '../../views/ComiteView';
-import ContactView from '../../views/ContactView';
-import DemandeValidationView from '../../views/DemandeValidationView';
-import DemandeListeView from '../../views/DemandeListeView';
-import DemandeMaterielView from '../../views/DemandeMaterielView';
+import ActualitesView from '@/views/ActualitesView';
+import ComiteView from '@/views/ComiteView';
+import ContactView from '@/views/ContactView';
+import DemandeValidationView from '@/views/DemandeValidationView';
+import DemandeListeView from '@/views/DemandeListeView';
+import DemandeMaterielView from '@/views/DemandeMaterielView';
 
 // models
-import { Evenement } from '../../models/Evenement';
-import { Materiel } from "../../models/Materiel";
+import { Evenement } from '@/models/Evenement';
+import { Materiel } from "@/models/Materiel";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Demande = () => {
@@ -64,9 +64,9 @@ const Demande = () => {
 
         <View style={{paddingTop: headerHeight }}>
             <ScrollView style={styles.container}>
-                <DemandeValidationView materiel={materiel} />
+                {/* <DemandeValidationView materiel={materiel} /> */}
 
-                {/* <DemandeListeView materiels={materiels} /> */}
+                <DemandeListeView materiels={materiels} />
 
                 {/* <DemandeMaterielView materiel={materiel} /> */}
                 

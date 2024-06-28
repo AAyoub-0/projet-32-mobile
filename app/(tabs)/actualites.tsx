@@ -6,22 +6,22 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from "expo-router";
 
 // constants
-import * as Colors from '../../constants/Colors';
-import * as Texts from '../../constants/Texts';
+import * as Colors from '@/constants/Colors';
+import * as Texts from '@/constants/Texts';
 
 // components
-import DernieresActualite from '../../components/DerniereActualite';
-import ActualiteFuture from '../../components/ActualiteFuture';
-import Line from '../../components/Line';
-import TextInputFlat from '../../components/TextInputFlat';
+import DernieresActualite from '@/components/DerniereActualite';
+import ActualiteFuture from '@/components/ActualiteFuture';
+import Line from '@/components/Line';
+import TextInputFlat from '@/components/TextInputFlat';
 
 // views
-import ActualitesView from '../../views/ActualitesView';
-import ComiteView from '../../views/ComiteView';
-import ContactView from '../../views/ContactView';
+import ActualitesView from '@/views/ActualitesView';
+import ComiteView from '@/views/ComiteView';
+import ContactView from '@/views/ContactView';
 
 // models
-import { Evenement } from '../../models/Evenement';
+import { Evenement } from '@/models/Evenement';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 

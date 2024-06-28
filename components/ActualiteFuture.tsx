@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 import * as Colors from '../constants/Colors';
 import * as Texts from '../constants/Texts';
@@ -9,18 +9,21 @@ import { Evenement } from '../models/Evenement';
 
 type Props = {
     evenement: Evenement;
+    disabled?: boolean;
 }
 
-const ActualiteFuture: React.FC<Props> = ({ evenement }) => {
+const ActualiteFuture: React.FC<Props> = ({ evenement, disabled }) => {
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} disabled={disabled}>
             <View style={styles.date}>
                 <Text style={[Texts.textNumberBig, Texts.textSemiBold]}>{ evenement.getJour() }</Text>
                 <Text style={[Texts.textTitleBlue, Texts.textSemiBold]}>{ evenement.getMois() }</Text>
             </View>
             <Line margin={10} height={'100%'} backgroundColor={Colors.colorBorderLight} rounded={true} orientation="vertical" />
-            <Text style={[Texts.textBodySmall2, Texts.textSemiBold]}>{ evenement.nom }</Text>
-        </View>
+            <Text style={[Texts.textBodySmall2, Texts.textSemiBold, {flex: 1}]}>
+                { evenement.nom }
+            </Text>
+        </TouchableOpacity>
     )
 }
 export default ActualiteFuture;
@@ -43,5 +46,6 @@ const styles = StyleSheet.create({
     },
     date:{
         marginRight: 12,
+        minWidth: 60,
     }
 });

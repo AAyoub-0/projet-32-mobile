@@ -1,28 +1,29 @@
 // react-native
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image } from "react-native";
+import { StatusBar } from 'expo-status-bar';
 import { useHeaderHeight } from '@react-navigation/elements';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack } from "expo-router";
 
 // constants
-import * as Colors from '../../constants/Colors';
-import * as Texts from '../../constants/Texts';
+import * as Colors from '@/constants/Colors';
+import * as Texts from '@/constants/Texts';
 
 // components
-import DernieresActualite from '../../components/DerniereActualite';
-import ActualiteFuture from '../../components/ActualiteFuture';
-import Line from '../../components/Line';
-import TextInputFlat from '../../components/TextInputFlat';
+import DernieresActualite from '@/components/DerniereActualite';
+import ActualiteFuture from '@/components/ActualiteFuture';
+import Line from '@/components/Line';
+import TextInputFlat from '@/components/TextInputFlat';
 
 // views
-import ActualitesView from '../../views/ActualitesView';
-import ComiteView from '../../views/ComiteView';
-import ContactView from '../../views/ContactView';
-import MaterielView from '../../views/MaterielView';
+import ActualitesView from '@/views/ActualitesView';
+import ComiteView from '@/views/ComiteView';
+import ContactView from '@/views/ContactView';
+import MaterielView from '@/views/MaterielView';
 
 // models
-import { Evenement } from '../../models/Evenement';
+import { Evenement } from '@/models/Evenement';
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Materiel = () => {
@@ -43,7 +44,7 @@ const Materiel = () => {
                             height: 140}} >
                             <View style={styles.hamburger}>
                                 <TouchableOpacity>
-                                    <FontAwesome name="bars" size={24} color={Colors.colorWhite} />
+                                    <FontAwesome name="newspaper-o" size={24} color={Colors.colorWhite} />
                                 </TouchableOpacity>
                             </View>
                         </SafeAreaView>
@@ -60,6 +61,8 @@ const Materiel = () => {
                     
                 </ScrollView>
             </View>
+
+            <StatusBar style="light" />
         </KeyboardAvoidingView>
     )
 }
