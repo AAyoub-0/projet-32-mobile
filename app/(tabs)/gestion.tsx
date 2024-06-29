@@ -101,7 +101,7 @@ const Gestion = () => {
                     <View style={styles.boxContainer}>
                         {menus.map((menu, index) => (
                             <Link href={menu.link} key={index} asChild>
-                                <Box key={index} text={menu.text} icon={menu.icon} onPress={() => false} />
+                                <Box key={index} text={menu.text} icon={menu.icon} />
                             </Link>
                         ))}
                     </View>

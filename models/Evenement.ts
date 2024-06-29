@@ -30,4 +30,13 @@ export class Evenement {
     getAnnee(): number {
         return this.date.getFullYear();
     }
+
+    static fromJson(json: any): Evenement {
+        const jsonParsed = JSON.parse(json);
+        return jsonParsed as Evenement;
+    }
+
+    static toJson(evenement: Evenement): string {
+        return JSON.stringify(evenement);
+    }
 }

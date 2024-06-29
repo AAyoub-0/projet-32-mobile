@@ -18,6 +18,7 @@ import { Materiel } from "@/models/Materiel";
 const MaterielFormulaire: React.FC = () => {
 
     const { parameter } = useLocalSearchParams();
+    
     const [titre, setTitre] = useState<string>('Ajouter du matériel');
     const [isChecked, setChecked] = React.useState(false);
     const [libelle, setLibelle] = React.useState('');

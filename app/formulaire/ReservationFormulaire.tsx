@@ -68,6 +68,7 @@ const ReservationFormulaire: React.FC = () => {
               setDateReservation(currentDate);
             },
             mode: 'date',
+            locale: 'fr'
           });
         } else {
             setShowDateReservation(true);
@@ -83,6 +84,7 @@ const ReservationFormulaire: React.FC = () => {
               setDateRetour(currentDate);
             },
             mode: 'date',
+            locale: 'fr'
           });
         } else {
             setShowDateRetour(true);
@@ -129,13 +131,14 @@ const ReservationFormulaire: React.FC = () => {
                           )}
                           {Platform.OS !== 'android' && (
                               <DateTimePickerComponent
-                              style={{alignSelf: 'flex-start'}}
-                              value={dateReservation}
-                              mode="date"
-                              display="default"
-                              onChange={(_: any, selectedDate: Date) => {
-                                  const currentDate = selectedDate || dateReservation;
-                                  setShowDateReservation(false);
+                                style={{alignSelf: 'flex-start'}}
+                                value={dateReservation}
+                                mode="date"
+                                display="default"
+                                locale="fr"
+                                onChange={(_: any, selectedDate: Date) => {
+                                    const currentDate = selectedDate || dateReservation;
+                                    setShowDateReservation(false);
                                   setDateReservation(currentDate);}}/>)}
                       </View>
                       
@@ -148,14 +151,15 @@ const ReservationFormulaire: React.FC = () => {
                           )}
                           {Platform.OS !== 'android' && (
                               <DateTimePickerComponent
-                              style={{alignSelf: 'flex-start'}}
-                              value={dateRetour}
-                              mode="date"
-                              display="default"
-                              onChange={(_: any, selectedDate: Date) => {
-                                  const currentDate = selectedDate || dateRetour;
-                                  setShowDateRetour(false);
-                                  setDateRetour(currentDate);}}/>)}
+                                style={{alignSelf: 'flex-start'}}
+                                value={dateRetour}
+                                mode="date"
+                                display="default"
+                                locale="fr"
+                                onChange={(_: any, selectedDate: Date) => {
+                                    const currentDate = selectedDate || dateRetour;
+                                    setShowDateRetour(false);
+                                    setDateRetour(currentDate);}}/>)}
                       </View>
 
                       <View>

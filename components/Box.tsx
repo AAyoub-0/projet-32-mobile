@@ -7,7 +7,7 @@ import * as Colors from '@/constants/Colors';
 type Props = {
     text: string;
     icon: any;
-    onPress: () => void;
+    onPress?: () => void;
 }
 
 const Box: React.FC<Props> = ({ text, icon, onPress }, ref) => {

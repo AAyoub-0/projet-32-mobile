@@ -10,11 +10,12 @@ import { Evenement } from '../models/Evenement';
 type Props = {
     evenement: Evenement;
     disabled?: boolean;
+    onPress?: () => void;
 }
 
-const ActualiteFuture: React.FC<Props> = ({ evenement, disabled }) => {
+const ActualiteFuture: React.FC<Props> = ({ evenement, disabled, onPress }) => {
     return (
-        <TouchableOpacity style={styles.container} disabled={disabled}>
+        <TouchableOpacity style={styles.container} disabled={disabled} onPress={onPress}>
             <View style={styles.date}>
                 <Text style={[Texts.textNumberBig, Texts.textSemiBold]}>{ evenement.getJour() }</Text>
                 <Text style={[Texts.textTitleBlue, Texts.textSemiBold]}>{ evenement.getMois() }</Text>

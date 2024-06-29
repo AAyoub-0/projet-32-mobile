@@ -1,7 +1,7 @@
 // react-native
 import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -58,7 +58,12 @@ const GestionCalendrier = () => {
                     
                     <View style={{flexDirection: 'column', rowGap: 20, marginTop: 23}}>
                         {evenements.map((evenement, index) => (
-                                <ActualiteFuture key={index} evenement={evenement} />
+                                <ActualiteFuture key={index} evenement={evenement} onPress={() =>{
+                                    router.push({
+                                        pathname: '/formulaire/EvenementFormulaire',
+                                        params: { parameter: Evenement.toJson(evenement) }
+                                    })
+                                }}  />
                             ))}
                     </View>
 
