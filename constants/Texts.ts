@@ -17,7 +17,7 @@ export const textTitle = {
 };
 
 export const textTitleBlue = {
-    color: Colors.colorPrimary,
+    color: Colors.colorSecondary,
     fontSize: 20,
 };
 export const textSubtitle = {

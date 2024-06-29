@@ -45,7 +45,7 @@ const ReservationComponent: React.FC<Props> = ({ reservation, onPress }, ref) =>
     }
 
     return (
-        <View style={{ width: '100%', backgroundColor: '#00148925', borderRadius: 8 }}>
+        <View style={{ width: '100%', backgroundColor: Colors.colorPrimaryLight3, borderRadius: 8 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ padding: 16, borderRightWidth: 1, borderBottomWidth: 1, borderColor: Colors.colorBg, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={[Texts.textBody, Texts.textBold, { color: Colors.colorBlackLight }]}>
@@ -64,7 +64,7 @@ const ReservationComponent: React.FC<Props> = ({ reservation, onPress }, ref) =>
             <View style={{padding: 16}}>
                 <Text style={[Texts.textBody, Texts.textBold, { color: Colors.colorBlackLight }]}>Matériel</Text>
                 
-                <View style={{ marginVertical: 5, paddingVertical: 3, paddingHorizontal: 6, backgroundColor: '#00148920', borderRadius: 8,}}>
+                <View style={{ marginVertical: 5, paddingVertical: 3, paddingHorizontal: 6, backgroundColor: Colors.colorPrimaryLight3, borderRadius: 8,}}>
                     <View style={{position: 'absolute', backgroundColor: Colors.colorWarning, padding: 3, borderRadius: 10, right: -10, top: -5, zIndex: 10}}>
                         <Text style={[Texts.textBodySmall2, { color: Colors.colorWhite }]}>
                             x{reservation.quantite}

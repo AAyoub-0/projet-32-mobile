@@ -16,7 +16,7 @@ const MessageComponent: React.FC<Props> = ({ contact, onPress }) => {
     const titre = contact.nom + ' ' + contact.prenom;
 
     return (
-        <View style={{ width: '100%', backgroundColor: '#00148925', borderRadius: 8 }}>
+        <View style={{ width: '100%', backgroundColor: Colors.colorPrimaryLight3, borderRadius: 8 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ padding: 12, borderBottomWidth: 1, borderColor: Colors.colorBg, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={[Texts.textTitle, Texts.textBold, { color: Colors.colorBlackLight }]}>

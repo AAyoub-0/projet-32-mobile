@@ -9,7 +9,7 @@ import * as Texts from '../constants/Texts';
 const ComiteView = () => {
     return (
         <View>
-            <View style={styles.leComite}>
+            <View>
                 <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]}>Le Comité</Text>
                 <Text style={[Texts.textBody]}>
                     Le Comité des Fêtes se compose des 7 membres du bureau et de 37 membres actifs {"\n"}{"\n"}
@@ -20,7 +20,7 @@ const ComiteView = () => {
                 </Text>
             </View>
 
-            <Text style={[Texts.textTitleBlue, Texts.textBold, {marginBottom: 30, marginTop: 23}]}>Les membres du bureau</Text>
+            <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 30, marginTop: 23}]}>Les membres du bureau</Text>
 
             <View style={styles.membre}>
                 <Image style={{ width: 95, height: 93, transform: [{ translateX: -20 }, {translateY: -15}] }} source={{ uri: 'https://static.ess.com/uploads/Unknown-Female.jpg' }} />

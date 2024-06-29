@@ -2,9 +2,11 @@
 
 export const colorBg = '#F2F2F2'
 
-export const colorPrimary = '#001489'
+export const colorPrimary = '#0870c5'
 
-export const colorPrimaryLight = '#00148980'
+export const colorPrimaryLight = '#0870c580'
+export const colorPrimaryLight2 = '#0870c550'
+export const colorPrimaryLight3 = '#0870c535'
 
 export const colorSecondary = '#5342A2'
 
