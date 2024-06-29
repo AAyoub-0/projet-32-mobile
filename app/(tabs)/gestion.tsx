@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingV
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from "expo-router";
+import { Stack, Link  } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -24,18 +24,14 @@ import ActualitesView from '@/views/ActualitesView';
 import ComiteView from '@/views/ComiteView';
 import ContactView from '@/views/ContactView';
 import MaterielView from '@/views/MaterielView';
-import GestionMaterielView from "@/views/GestionMaterielView";
+
 import MaterielFormulaireView from "@/views/MaterielFormulaireView";
-import GestionReservationView from "@/views/GestionReservationView";
-import ReservationFormulaireView from "@/views/ReservationFormulaireView";
-import GestionCalendrierView from "@/views/GestionCalendrierView";
 import EvenementFormulaireView from "@/views/EvenementFormulaireView";
-import GestionContactView from "@/views/GestionContactView";
+import ReservationFormulaireView from "@/views/ReservationFormulaireView";
 import ContactFormulaireView from "@/views/ContactFormulaireView";
 
 // models
 import { Evenement } from '@/models/Evenement';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Materiel } from "@/models/Materiel";
 import { Reservation } from "@/models/Reservation";
 import { Contact } from "@/models/Contact";
@@ -43,10 +39,10 @@ import { Contact } from "@/models/Contact";
 const Gestion = () => {
 
     const menus = [
-        { text: 'Matériel', icon: 'wrench' },
-        { text: 'Réservation', icon: 'calendar' },
-        { text: 'Calendrier', icon: 'newspaper-o' },
-        { text: 'Contact', icon: 'envelope' },
+        { text: 'Matériel', icon: 'wrench', link: '/gestion/GestionMateriel' },
+        { text: 'Réservation', icon: 'calendar', link: '/gestion/GestionReservation'},
+        { text: 'Calendrier', icon: 'newspaper-o', link: '/gestion/GestionCalendrier'},
+        { text: 'Contact', icon: 'envelope', link: '/gestion/GestionContact'},
     ];
 
     const materiel = new Materiel(1, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
@@ -109,27 +105,11 @@ const Gestion = () => {
 
                     <View style={styles.boxContainer}>
                         {menus.map((menu, index) => (
-                            <Box key={index} text={menu.text} icon={menu.icon} onPress={() => false} />
+                            <Link href={menu.link} key={index} asChild>
+                                <Box key={index} text={menu.text} icon={menu.icon} onPress={() => false} />
+                            </Link>
                         ))}
                     </View>
-
-                    {/* <GestionMaterielView materiels={materiels} /> */}
-                    
-                    {/* <MaterielFormulaireView materiel={nullMateriel} /> */}
-
-                    {/*  */}
-
-                    {/* <GestionReservationView reservations={reservations} /> */}
-
-                    {/* <ReservationFormulaireView reservation={reservation} /> */}
-
-                    {/* <GestionCalendrierView evenements={evenements} /> */}
-
-                    {/* <EvenementFormulaireView evenement={evenement} /> */}
-
-                    {/* <GestionContactView contacts={messages} /> */}
-
-                    {/* <ContactFormulaireView contact={message} /> */}
 
                     <View style={{ marginBottom: 50 }} />
                     
