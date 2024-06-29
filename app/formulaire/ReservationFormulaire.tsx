@@ -20,7 +20,7 @@ type Props = {
     reservation: Reservation
 }
 
-const ReservationFormulaireView: React.FC<Props> = ({ reservation }) => {
+const ReservationFormulaire: React.FC<Props> = ({ reservation }) => {
 
     const [dateReservation, setDateReservation] = React.useState(reservation.dateReservation);
     const [statutReservation, setStatutReservation] = React.useState(reservation.statutReservation);
@@ -138,4 +138,4 @@ const ReservationFormulaireView: React.FC<Props> = ({ reservation }) => {
             
     )
 }
-export default ReservationFormulaireView;
+export default ReservationFormulaire;

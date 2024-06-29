@@ -10,7 +10,7 @@ type Props = {
     onPress: () => void;
 }
 
-const Box: React.FC<Props> = ({ text, icon, onPress }) => {
+const Box: React.FC<Props> = ({ text, icon, onPress }, ref) => {
     return (
         <TouchableOpacity style={styles.box} onPress={onPress}>
             <FontAwesome name={icon} size={37} color={Colors.colorBlackLight} />

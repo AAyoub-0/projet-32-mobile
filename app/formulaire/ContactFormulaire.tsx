@@ -20,7 +20,7 @@ type Props = {
     contact: Contact
 }
 
-const ContactFormulaireView: React.FC<Props> = ({ contact }) => {
+const ContactFormulaire: React.FC<Props> = ({ contact }) => {
 
     const titre = contact.nom + ' ' + contact.prenom;
     const [reponse, setReponse] = React.useState('');
@@ -95,4 +95,4 @@ const ContactFormulaireView: React.FC<Props> = ({ contact }) => {
         </View>
     )
 }
-export default ContactFormulaireView;
+export default ContactFormulaire;

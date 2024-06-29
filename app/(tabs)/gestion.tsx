@@ -25,11 +25,6 @@ import ComiteView from '@/views/ComiteView';
 import ContactView from '@/views/ContactView';
 import MaterielView from '@/views/MaterielView';
 
-import MaterielFormulaireView from "@/views/MaterielFormulaireView";
-import EvenementFormulaireView from "@/views/EvenementFormulaireView";
-import ReservationFormulaireView from "@/views/ReservationFormulaireView";
-import ContactFormulaireView from "@/views/ContactFormulaireView";
-
 // models
 import { Evenement } from '@/models/Evenement';
 import { Materiel } from "@/models/Materiel";
@@ -101,7 +96,7 @@ const Gestion = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false}>
 
                     <View style={styles.boxContainer}>
                         {menus.map((menu, index) => (

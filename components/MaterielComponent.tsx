@@ -8,12 +8,13 @@ import { Materiel } from '../models/Materiel';
 type Props = {
     materiel: Materiel,
     showPrice?: boolean,
-    disabled?: boolean
+    disabled?: boolean,
+    onPress?: () => void
 }
 
-const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, disabled }) => {
+const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, disabled, onPress }) => {
     return (
-        <TouchableOpacity style={styles.materiel} disabled={disabled}>
+        <TouchableOpacity style={styles.materiel} disabled={disabled} onPress={onPress}>
             <Image style={{ width: 97, height: 94, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} 
                     source={{ uri: materiel.imageUrl }} />
             <View style={{ justifyContent: 'space-between', paddingHorizontal: 12, paddingVertical: 8, flex: 1 }}>

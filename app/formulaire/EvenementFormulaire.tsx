@@ -19,7 +19,7 @@ type Props = {
     evenement?: Evenement | null
 }
 
-const EvenementFormulaireView: React.FC<Props> = ({ evenement }) => {
+const EvenementFormulaire: React.FC<Props> = ({ evenement }) => {
 
     const titre = evenement == undefined || evenement == null
     ? 'Ajouter un événement' : 'Modifier un événement';
@@ -111,4 +111,4 @@ const EvenementFormulaireView: React.FC<Props> = ({ evenement }) => {
         </View>
     )
 }
-export default EvenementFormulaireView;
+export default EvenementFormulaire;

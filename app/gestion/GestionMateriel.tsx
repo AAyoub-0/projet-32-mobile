@@ -1,7 +1,7 @@
 // react-native
 import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from "expo-router";
+import { Stack, Link, router } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -23,7 +23,6 @@ const GestionMateriel = ({ }) => {
     const materiel3 = new Materiel(3, 'Chaise de camping', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
     const materiel4 = new Materiel(4, 'Table 10x2m', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
     const materiel5 = new Materiel(5, 'Camion', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const nullMateriel = new Materiel(0, '', 0, false, 0, 0, '');
 
     const materiels = [materiel, materiel2, materiel3, materiel4, materiel5];
 
@@ -58,7 +57,12 @@ const GestionMateriel = ({ }) => {
                     <TextInputFlat placeholder="Rechercher du matériel" border={[1, 1, 1, 1]} borderRadius={8} rightIcon={'search'} />
                     
                     {materiels.map((materiel, index) => (
-                            <MaterielComponent key={index} materiel={materiel} showPrice={true} />
+                            <MaterielComponent key={index} materiel={materiel} showPrice={true} onPress={() => {
+                                router.push({
+                                    pathname: '/formulaire/MaterielFormulaire',
+                                    params: { parameter: Materiel.toJson(materiel) }
+                                });
+                            }} />
                         ))}
 
                     <View style={{ marginBottom: 80 }} />

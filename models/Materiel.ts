@@ -16,4 +16,14 @@ export class Materiel {
         this.nbExemplairesDisponibles = nbExemplairesDisponibles;
         this.imageUrl = imageUrl;
     }
+
+    static fromJson(json: any): Materiel {
+        const parsedJson = JSON.parse(json as string);
+        console.log('Parsed JSON', parsedJson as Materiel);
+        return parsedJson as Materiel;
+    }
+
+    static toJson(materiel: Materiel): string {
+        return JSON.stringify(materiel);
+    }
 }
