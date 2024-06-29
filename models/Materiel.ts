@@ -19,7 +19,6 @@ export class Materiel {
 
     static fromJson(json: any): Materiel {
         const parsedJson = JSON.parse(json as string);
-        console.log('Parsed JSON', parsedJson as Materiel);
         return parsedJson as Materiel;
     }
 

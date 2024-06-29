@@ -1,6 +1,6 @@
 // react-native
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from "react-native";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -56,7 +56,12 @@ const GestionReservation = () => {
                     <TextInputFlat placeholder="Rechercher une réservation" border={[1, 1, 1, 1]} borderRadius={8} rightIcon={'search'} />
                     <View style={{ marginVertical: 20, rowGap: 10 }} >
                         {reservations.map((reservation, index) => (
-                            <ReservationComponent key={index} reservation={reservation} />
+                            <ReservationComponent key={index} reservation={reservation} onPress={() => {
+                                router.push({
+                                    pathname: '/formulaire/ReservationFormulaire',
+                                    params: { parameter: Reservation.toJson(reservation) }
+                                });
+                            }} />
                         ))}
                     </View>
 

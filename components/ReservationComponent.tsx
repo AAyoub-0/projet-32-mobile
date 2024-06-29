@@ -11,12 +11,13 @@ import { Reservation } from '../models/Reservation';
 
 type Props = {
     reservation: Reservation;
+    onPress: () => void;
 }
 
 let bgColorStatus: ColorValue;
 let colorStatus: ColorValue;
 
-const ReservationComponent: React.FC<Props> = ({ reservation }) => {
+const ReservationComponent: React.FC<Props> = ({ reservation, onPress }, ref) => {
 
     const titre = reservation.association 
     ? reservation.association.nom 
@@ -56,7 +57,7 @@ const ReservationComponent: React.FC<Props> = ({ reservation }) => {
                         {titre}
                     </Text>
                 </View>
-                <TouchableOpacity style={{ padding: 16, borderLeftWidth: 1, borderBottomWidth: 1, borderColor: Colors.colorBg, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={onPress} style={{ padding: 16, borderLeftWidth: 1, borderBottomWidth: 1, borderColor: Colors.colorBg, justifyContent: 'center', alignItems: 'center' }}>
                     <FontAwesome name="pencil" size={24} color={Colors.colorBlackLight} />
                 </TouchableOpacity>
             </View>

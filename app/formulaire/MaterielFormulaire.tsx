@@ -18,16 +18,14 @@ import { Materiel } from "@/models/Materiel";
 const MaterielFormulaire: React.FC = () => {
 
     const { parameter } = useLocalSearchParams();
-    const [materiel, setMateriel] = useState<Materiel>(new Materiel(0, '', 1, false, 0, 0, ''));
     const [titre, setTitre] = useState<string>('Ajouter du matériel');
-    const [isChecked, setChecked] = React.useState(materiel.pourAssociation);
-    const [libelle, setLibelle] = React.useState(materiel.libelle);
+    const [isChecked, setChecked] = React.useState(false);
+    const [libelle, setLibelle] = React.useState('');
     const [prix, setPrix] = React.useState('1');
 
     useEffect(() => {
         if (parameter) {
             const materielParsed = Materiel.fromJson(parameter as any);
-            setMateriel(materielParsed);
             setLibelle(materielParsed.libelle);
             setPrix(materielParsed.prix.toString());
             setChecked(materielParsed.pourAssociation);
@@ -36,9 +34,7 @@ const MaterielFormulaire: React.FC = () => {
     }, []);
 
     const onSubmitAsync = async () => {
-        materiel.libelle = libelle;
-        materiel.prix = parseFloat(prix);
-        materiel.pourAssociation = isChecked;
+        const materiel = new Materiel(0, libelle, parseInt(prix), isChecked, 0, 0, '');
         alert(`${materiel.libelle} - ${materiel.prix} - ${materiel.pourAssociation}`);
     }
 

@@ -22,4 +22,13 @@ export class Reservation {
         this.association = association;
         this.particulier = particulier;
     }
+
+    static fromJson(json: any): Reservation {
+        const jsonParsed = JSON.parse(json as string);
+        return jsonParsed as Reservation;
+    }
+
+    static toJson(reservation: Reservation): string {
+        return JSON.stringify(reservation);
+    }
 }
