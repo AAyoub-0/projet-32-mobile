@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingV
 import { useHeaderHeight } from '@react-navigation/elements';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
+import Octicons from '@expo/vector-icons/Octicons';
 import { Stack } from "expo-router";
 
 // constants
@@ -54,7 +55,7 @@ const Demande = () => {
                     headerRight: () => (
                         <View style={{ flexDirection: 'row', width: 100, justifyContent: 'flex-end', marginRight: 20 }}>
                             <TouchableOpacity>
-                                <FontAwesome name="bars" size={24} color={Colors.colorBlack} />
+                                <Octicons name="feed-person" size={24} color={Colors.colorBlack} />
                             </TouchableOpacity>
                         </View>
                     ),

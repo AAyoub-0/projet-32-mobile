@@ -2,6 +2,7 @@
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image } from "react-native";
 import { useHeaderHeight } from '@react-navigation/elements';
 import { FontAwesome } from '@expo/vector-icons';
+import Octicons from '@expo/vector-icons/Octicons';
 import React, { useState } from 'react';
 import { Stack } from "expo-router";
 
@@ -54,7 +55,7 @@ const Accueil = () => {
                             height: 120 }} >
                             <View style={styles.hamburger}>
                                 <TouchableOpacity>
-                                    <FontAwesome name="bars" size={24} color={Colors.colorWhite} />
+                                    <Octicons name="feed-person" size={24} color={Colors.colorWhite} />
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.menus}>
