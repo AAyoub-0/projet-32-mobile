@@ -8,7 +8,7 @@ import { Contact } from "@/models/Contact";
 
 type Props = {
     contact: Contact;
-    onPress: () => void;
+    onPress?: () => void;
 }
 
 const MessageComponent: React.FC<Props> = ({ contact, onPress }) => {
