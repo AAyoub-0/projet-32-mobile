@@ -8,9 +8,10 @@ import { Contact } from "@/models/Contact";
 
 type Props = {
     contact: Contact;
+    onPress: () => void;
 }
 
-const MessageComponent: React.FC<Props> = ({ contact }) => {
+const MessageComponent: React.FC<Props> = ({ contact, onPress }) => {
 
     const titre = contact.nom + ' ' + contact.prenom;
 
@@ -22,7 +23,7 @@ const MessageComponent: React.FC<Props> = ({ contact }) => {
                         {titre}
                     </Text>
                 </View>
-                <TouchableOpacity style={{ padding: 16, borderLeftWidth: 1, borderBottomWidth: 1, borderColor: Colors.colorBg, justifyContent: 'center', alignItems: 'center' }}>
+                <TouchableOpacity onPress={onPress} style={{ padding: 16, borderLeftWidth: 1, borderBottomWidth: 1, borderColor: Colors.colorBg, justifyContent: 'center', alignItems: 'center' }}>
                     <FontAwesome name="eye" size={24} color={Colors.colorBlackLight} />
                 </TouchableOpacity>
             </View>

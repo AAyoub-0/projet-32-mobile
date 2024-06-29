@@ -14,4 +14,13 @@ export class Contact {
         this.email = email;
         this.message = message;
     }
+
+    static fromJson(json: any): Contact {
+        const jsonParsed = JSON.parse(json);
+        return jsonParsed as Contact;
+    }
+
+    static toJson(contact: Contact): string {
+        return JSON.stringify(contact);
+    }
 }

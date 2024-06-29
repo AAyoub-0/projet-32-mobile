@@ -1,7 +1,7 @@
 // react-native
 import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -49,7 +49,12 @@ const GestionContact = () => {
                     
                     <View style={{flexDirection: 'column', rowGap: 20, marginTop: 23}}>
                         {messages.map((contact, index) => (
-                            <MessageComponent key={index} contact={contact} />
+                            <MessageComponent key={index} contact={contact} onPress={() => {
+                                router.push({
+                                    pathname: '/formulaire/ContactFormulaire',
+                                    params: { parameter: Contact.toJson(contact) }
+                                })
+                            }} />
                         ))}
                     </View>
 
