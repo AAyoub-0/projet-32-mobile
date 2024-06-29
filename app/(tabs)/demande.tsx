@@ -4,7 +4,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import React, { useState } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import Octicons from '@expo/vector-icons/Octicons';
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -16,14 +16,6 @@ import ActualiteFuture from '@/components/ActualiteFuture';
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
 import MaterielComponent from "@/components/MaterielComponent";
-
-// views
-import ActualitesView from '@/views/ActualitesView';
-import ComiteView from '@/views/ComiteView';
-import ContactView from '@/views/ContactView';
-import DemandeValidationView from '@/views/DemandeValidationView';
-import DemandeListeView from '@/views/DemandeListeView';
-import DemandeMaterielView from '@/views/DemandeMaterielView';
 
 // models
 import { Evenement } from '@/models/Evenement';
@@ -65,11 +57,38 @@ const Demande = () => {
 
             <View>
                 <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
-                    {/* <DemandeValidationView materiel={materiel} /> */}
 
-                    <DemandeListeView materiels={materiels} />
+                <View>
+                    <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]} >
+                        Demande de matériel
+                    </Text>
 
-                    {/* <DemandeMaterielView materiel={materiel} /> */}
+                    <Text style={[Texts.textSubtitle, Texts.textBold, {marginBottom: 23}]}>
+                        Les demandes de locations sont destinées uniquement aux habitants de Vaulx Milieu. Le matériel loué ne peut pas quitter la commune de Vaulx Milieu.
+                    </Text>
+
+                    <Text style={[Texts.textBodyPrimary, Texts.textBold, {marginBottom: 23}]}>
+                        Liste du matériel
+                    </Text>
+
+                    <View style={{marginBottom: 23}}>
+                        <View style={{ flexDirection: 'column', rowGap: 10 }}>
+                            <Text style={[Texts.textBodySmall2, Texts.textSemiBold]}>
+                                Sélectionnez le matériel souhaité
+                            </Text>
+                            <TextInputFlat rightIcon={'search'} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Rechercher un matériel" />
+                        </View>
+
+                        {materiels.map((materiel, index) => (
+                            <MaterielComponent key={index} materiel={materiel} showPrice={true} onPress={() => {
+                                    router.push({
+                                        pathname: '/demande/DemandeMateriel',
+                                        params: { parameter: Materiel.toJson(materiel) }
+                                    })
+                            }} />
+                        ))}
+                </View>
+        </View>
                     
                     <View style={{ height: 50 }}></View>
                 </ScrollView>

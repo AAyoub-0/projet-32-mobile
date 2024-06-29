@@ -7,9 +7,9 @@ export class Association {
     telephone: string;
     email: string;
     reservations?: Reservation[]
-    utilisateur?: Utilisateur
+    utilisateur?: Utilisateur | null;
 
-    constructor(id: number, nom: string, telephone: string, email: string, reservations: Reservation[], utilisateur: Utilisateur) {
+    constructor(id: number, nom: string, telephone: string, email: string, reservations: Reservation[], utilisateur: Utilisateur | null) {
         this.id = id;
         this.nom = nom;
         this.telephone = telephone;

@@ -13,15 +13,30 @@ type Props = {
 }
 
 const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, disabled, onPress }) => {
+
+    if (materiel == undefined) {
+        return null;
+    }
+    
+    const imageUri = materiel.imageUrl != undefined ? materiel.imageUrl : 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg';
+
     return (
         <TouchableOpacity style={styles.materiel} disabled={disabled} onPress={onPress}>
             <Image style={{ width: 97, height: 94, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} 
-                    source={{ uri: materiel.imageUrl }} />
+                    source={{ uri: imageUri }} />
             <View style={{ justifyContent: 'space-between', paddingHorizontal: 12, paddingVertical: 8, flex: 1 }}>
-                <Text style={[Texts.textBody, Texts.textSemiBold]}>{materiel.libelle}</Text>
+                <Text style={[Texts.textBody, Texts.textSemiBold]}>
+                    {materiel.libelle}
+                </Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={[Texts.textCaption, Texts.textSemiBold]}>Quantité : {materiel.nbExemplairesDisponibles}</Text>
-                    {(showPrice && materiel.prix) && <Text style={[Texts.textCaptionBlue, Texts.textSemiBold]}>Prix : {materiel.prix} € / Weekend</Text>}
+                    <Text style={[Texts.textCaption, Texts.textSemiBold]}>
+                        Quantité : {materiel.nbExemplairesDisponibles}
+                    </Text>
+                    <Text style={[Texts.textCaptionBlue, Texts.textSemiBold]}>
+                    {(showPrice && materiel.prix) && 
+                        (`Prix : ${materiel.prix} € / Weekend`)
+                    }
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>
