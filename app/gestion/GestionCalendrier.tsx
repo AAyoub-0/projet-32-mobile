@@ -45,7 +45,12 @@ const GestionCalendrier = () => {
                             Gérer le calendrier des événements
                         </Text>
 
-                        <TouchableOpacity style={styles.ajoutBouton}>
+                        <TouchableOpacity style={styles.ajoutBouton} onPress={_ => {
+                            router.push({
+                                pathname: '/formulaire/EvenementFormulaire',
+                                params: { parameter: null }
+                            })
+                        }}>
                             <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>
                                 Ajouter
                             </Text>

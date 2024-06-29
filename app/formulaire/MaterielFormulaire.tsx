@@ -23,6 +23,7 @@ const MaterielFormulaire: React.FC = () => {
     const [isChecked, setChecked] = React.useState(false);
     const [libelle, setLibelle] = React.useState('');
     const [prix, setPrix] = React.useState('1');
+    const [nbExemplaires, setNbExemplaires] = React.useState('1');
 
     useEffect(() => {
         if (parameter) {
@@ -66,6 +67,13 @@ const MaterielFormulaire: React.FC = () => {
                             <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Prix de location <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
                             <TextInputFlat value={prix} onChangeText={text => setPrix(text)} keyboardType="number-pad" border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez le prix de location" />
                         </View>
+
+                        {titre === 'Ajouter du matériel' && (
+                            <View>
+                                <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Nombre d'exemplaires <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
+                                <TextInputFlat value={nbExemplaires} onChangeText={text => setNbExemplaires(text)} keyboardType="number-pad" border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez le nombre d'exemplaires" />
+                            </View>
+                        )}
 
                         <View>
                             <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Image <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>

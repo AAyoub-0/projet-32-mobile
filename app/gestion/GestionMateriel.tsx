@@ -45,7 +45,12 @@ const GestionMateriel = ({ }) => {
                             Gérer le matériel
                         </Text>
 
-                        <TouchableOpacity style={styles.ajoutBouton}>
+                        <TouchableOpacity style={styles.ajoutBouton} onPress={_ => {
+                            router.push({
+                                pathname: '/formulaire/MaterielFormulaire',
+                                params: { parameter: null }
+                            })
+                        }}>
                             <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>
                                 Ajouter du matériel
                             </Text>
