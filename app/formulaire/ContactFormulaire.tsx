@@ -45,7 +45,7 @@ const ContactFormulaire: React.FC = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container} alwaysBounceVertical={false}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
 
                     <Text style={[Texts.textBody, Texts.textSemiBold]}>
                         {titre} - {contact.email}

@@ -43,50 +43,44 @@ const Demande = () => {
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-            <Stack.Screen
-                options={{
-                    headerTransparent: true,
+            <Stack.Screen options={
+                {
                     headerTitle: '',
-                    header: () => (
-                        <SafeAreaView style={{ 
-                            backgroundColor: Colors.colorPrimary, 
-                            paddingBottom: 5, 
-                            paddingHorizontal: 20}} >
-                            <View style={styles.hamburger}>
-                                <TouchableOpacity>
-                                    <FontAwesome name="bars" size={24} color={Colors.colorWhite} />
-                                </TouchableOpacity>
-                            </View>
-                        </SafeAreaView>
-                    )
-                }}>  
+                    headerLeft: () => (
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start', marginLeft: 20 }}>
+                            <Text style={{ fontSize: 24, fontWeight: 'bold', color: Colors.colorBlack }}>Réserver</Text>
+                        </View>
+                    ),
+                    headerRight: () => (
+                        <View style={{ flexDirection: 'row', width: 100, justifyContent: 'flex-end', marginRight: 20 }}>
+                            <TouchableOpacity>
+                                <FontAwesome name="bars" size={24} color={Colors.colorBlack} />
+                            </TouchableOpacity>
+                        </View>
+                    ),
+                }
+            }> 
             </Stack.Screen>
 
-        <View style={{paddingTop: headerHeight }}>
-            <ScrollView style={styles.container}>
-                {/* <DemandeValidationView materiel={materiel} /> */}
+            <View>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
+                    {/* <DemandeValidationView materiel={materiel} /> */}
 
-                <DemandeListeView materiels={materiels} />
+                    <DemandeListeView materiels={materiels} />
 
-                {/* <DemandeMaterielView materiel={materiel} /> */}
-                
-                <View style={{ height: 50 }}></View>
-            </ScrollView>
-        </View>
-    </KeyboardAvoidingView>
+                    {/* <DemandeMaterielView materiel={materiel} /> */}
+                    
+                    <View style={{ height: 50 }}></View>
+                </ScrollView>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 export default Demande;
 
 const styles = StyleSheet.create({
-    hamburger: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-        width: '100%',
-        marginTop: 5,
-    },
     container: {
         paddingVertical: 24,
         paddingHorizontal: 28
-    },
+    }
 });

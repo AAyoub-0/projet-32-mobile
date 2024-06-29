@@ -48,7 +48,7 @@ const Gestion = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container} alwaysBounceVertical={false}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
 
                     <View style={styles.boxContainer}>
                         {menus.map((menu, index) => (

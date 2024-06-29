@@ -47,7 +47,11 @@ const Calendrier = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
+                    
+                    <Text style={[Texts.textTitle, Texts.textBold, {width: '70%', marginBottom: 23}]}>
+                        Calendrier des événements de l'année {new Date().getFullYear()}
+                    </Text>
 
                     <View style={{rowGap: 23}}>
                         {evenements.map((evenement, index) => (

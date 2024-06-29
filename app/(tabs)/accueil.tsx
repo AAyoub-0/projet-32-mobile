@@ -77,7 +77,7 @@ const Accueil = () => {
             </Stack.Screen>
 
             <View style={{paddingTop: headerHeight }}>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
                     
                     {selected == 'actualites' && <ActualitesView />}
 

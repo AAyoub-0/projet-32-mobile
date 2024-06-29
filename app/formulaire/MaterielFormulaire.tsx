@@ -51,7 +51,7 @@ const MaterielFormulaire: React.FC = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
                     <Text style={[Texts.textTitle, Texts.textBold]} >
                         {titre}
                     </Text>

@@ -20,7 +20,7 @@ const DemandeListeView: React.FC<Props> = ({ materiels }) => {
     return (
         <View>
             <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]} >
-                Demande de matériel : Particuliers
+                Demande de matériel
             </Text>
 
             <Text style={[Texts.textSubtitle, Texts.textBold, {marginBottom: 23}]}>

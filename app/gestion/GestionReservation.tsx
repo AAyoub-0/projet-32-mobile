@@ -44,7 +44,7 @@ const GestionReservation = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={[Texts.textTitle, Texts.textBold, {maxWidth: '70%'}]} >

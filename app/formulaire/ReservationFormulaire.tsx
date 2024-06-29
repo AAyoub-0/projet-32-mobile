@@ -102,7 +102,7 @@ const ReservationFormulaire: React.FC = () => {
             </Stack.Screen>
 
             <View>
-                <ScrollView style={styles.container} alwaysBounceVertical={false}>
+                <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
 
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                       <Text style={[Texts.textTitle, Texts.textBold]} >
