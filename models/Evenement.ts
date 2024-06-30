@@ -7,10 +7,10 @@ export class Evenement {
     isActualite: boolean;
     imageUrl?: string;
 
-    constructor(id: number, nom: string, date: Date, lieu: string, commentaire: string, isActualite: boolean, imageUrl?: string) {
+    constructor(id: number, nom: string, date: Date | string, lieu: string, commentaire: string, isActualite: boolean, imageUrl?: string) {
         this.id = id;
         this.nom = nom;
-        this.date = date;
+        this.date = new Date(date);
         this.lieu = lieu;
         this.commentaire = commentaire;
         this.isActualite = isActualite;
@@ -24,7 +24,12 @@ export class Evenement {
     getMois(): string {
         const options: Intl.DateTimeFormatOptions = { month: 'long' };
         const month = new Intl.DateTimeFormat('fr-FR', options).format(this.date);
-        return month.charAt(0).toUpperCase() + month.slice(1);
+        const stringMonth =  month.charAt(0).toUpperCase() + month.slice(1);
+
+        if(stringMonth.length > 7) {
+            return stringMonth.slice(0, 3) + '.';
+        }
+        return stringMonth;
     }
 
     getAnnee(): number {
@@ -39,4 +44,6 @@ export class Evenement {
     static toJson(evenement: Evenement): string {
         return JSON.stringify(evenement);
     }
+
+    static apiImageUrl = 'http://192.168.1.215:8000/uploads/medias/';
 }

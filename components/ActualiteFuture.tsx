@@ -18,7 +18,7 @@ const ActualiteFuture: React.FC<Props> = ({ evenement, disabled, onPress }) => {
         <TouchableOpacity style={styles.container} disabled={disabled} onPress={onPress}>
             <View style={styles.date}>
                 <Text style={[Texts.textNumberBig, Texts.textSemiBold]}>{ evenement.getJour() }</Text>
-                <Text style={[Texts.textTitleBlue, Texts.textSemiBold]}>{ evenement.getMois() }</Text>
+                <Text style={[Texts.textTitleBlue, Texts.textSemiBold, {maxWidth: 60}]}>{ evenement.getMois() }</Text>
             </View>
             <Line margin={10} height={'100%'} backgroundColor={Colors.colorBorderLight} rounded={true} orientation="vertical" />
             <Text style={[Texts.textBodySmall2, Texts.textSemiBold, {flex: 1}]}>
