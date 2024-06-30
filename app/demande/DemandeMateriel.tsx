@@ -11,6 +11,7 @@ import * as Texts from '../../constants/Texts';
 // components
 import TextInputFlat from '../../components/TextInputFlat';
 import MaterielComponent from "@/components/MaterielComponent";
+import ActionButton from "@/components/ActionButton";
 
 // models
 import { Materiel } from "../../models/Materiel";
@@ -28,6 +29,8 @@ const DemandeMateriel: React.FC  = () => {
     const [showDateRetour, setShowDateRetour] = useState(false);
     const [association, setAssociation] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (parameter) {
@@ -76,16 +79,42 @@ const DemandeMateriel: React.FC  = () => {
         }
       };
 
-    const handleNext = () => {
-        if (validationSubmit()) {
-            const reservation = new Reservation(0, dateReservation, dateRendu, materiel, parseInt(quantite), 'En attente', null, null);
-            router.push({
-                pathname: '/demande/DemandeValidation',
-                params: { parameter: Reservation.toJson(reservation) }
-            });
+    const HandleCancelAsync = async () => {
+        setIsLoading(true);
+        try{
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            // Cancel the reservation
+            router.push('/demande');
         }
-        else{
-            alert(errorMessage as any);
+        catch(error){
+            console.log(error);
+        }
+        finally{
+            setIsLoading(false);
+        }
+    }
+
+    const handleNextAsync = async () => {
+        setIsLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        try{
+            if (validationSubmit()) {
+                const reservation = new Reservation(0, dateReservation, dateRendu, materiel, parseInt(quantite), 'En attente', null, null);
+                router.push({
+                    pathname: '/demande/DemandeValidation',
+                    params: { parameter: Reservation.toJson(reservation) }
+                });
+            }
+            else{
+                alert(errorMessage as any);
+            }
+        } 
+        catch(error){
+            console.log(error);
+        } 
+        finally{
+            setIsLoading(false);
         }
     }
 
@@ -186,13 +215,9 @@ const DemandeMateriel: React.FC  = () => {
                         </View>
                         
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', columnGap: 10 }}>
-                            <TouchableOpacity style={{borderRadius: 8, backgroundColor: Colors.colorDanger, width: 100, height: 37, justifyContent: 'center'}}>
-                                <Text style={[Texts.textBodyWhite, Texts.textBold, {textAlign: 'center'}]}>Retour</Text>
-                            </TouchableOpacity>
+                            <ActionButton text="Annuler" type="danger" isLoading={isLoading} onPress={HandleCancelAsync} />
 
-                            <TouchableOpacity onPress={handleNext} style={{borderRadius: 8, backgroundColor: Colors.colorSuccess, width: 100, height: 37, justifyContent: 'center'}}>
-                                <Text style={[Texts.textBodyWhite, Texts.textBold, {textAlign: 'center'}]}>Suivant</Text>
-                            </TouchableOpacity>
+                            <ActionButton text="Suivant" type="success" isLoading={isLoading} onPress={handleNextAsync} />
                         </View>
                     </View>
                 </ScrollView>

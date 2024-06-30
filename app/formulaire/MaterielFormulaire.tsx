@@ -11,6 +11,7 @@ import * as Texts from '@/constants/Texts';
 // components
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
+import ActionButton from "@/components/ActionButton";
 
 // models
 import { Materiel } from "@/models/Materiel";
@@ -24,6 +25,8 @@ const MaterielFormulaire: React.FC = () => {
     const [libelle, setLibelle] = React.useState('');
     const [prix, setPrix] = React.useState('1');
     const [nbExemplaires, setNbExemplaires] = React.useState('1');
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (parameter) {
@@ -40,6 +43,19 @@ const MaterielFormulaire: React.FC = () => {
         alert(`${materiel.libelle} - ${materiel.prix} - ${materiel.pourAssociation}`);
     }
 
+    const HandleSaveAsync = async () => {
+        setIsLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await onSubmitAsync();
+        setIsLoading(false);
+    }
+
+    const HandleDeleteAsync = async () => {
+        setIsLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsLoading(false);
+    }
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
              <Stack.Screen options={
@@ -52,9 +68,18 @@ const MaterielFormulaire: React.FC = () => {
 
             <View>
                 <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
-                    <Text style={[Texts.textTitle, Texts.textBold]} >
-                        {titre}
-                    </Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', columnGap: 10 }}>
+                        <Text style={[Texts.textTitle, Texts.textBold]} >
+                            {titre}
+                        </Text>
+                        <ActionButton
+                            text=""
+                            icon="trash"
+                            isLoading={isLoading}
+                            onPress={HandleSaveAsync}
+                            type="danger"
+                        />
+                    </View>
                     <Line marginBottom={20} marginTop={7} width={'100%'} orientation="horizontal" backgroundColor={Colors.colorGray} rounded={false} />
                                 
                     <View style={{ flexDirection: 'column', rowGap: 23 }}>
@@ -85,15 +110,13 @@ const MaterielFormulaire: React.FC = () => {
                             <Text style={[Texts.textBody, Texts.textSemiBold, {marginLeft: 5}]}>Seulement pour les associations <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
                         </View>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', columnGap: 10 }}>
-                            <TouchableOpacity style={{borderRadius: 8, backgroundColor: Colors.colorDanger, width: 100, height: 37, justifyContent: 'center'}}>
-                                <Text style={[Texts.textBodyWhite, Texts.textBold, {textAlign: 'center'}]}>Annuler</Text>
-                            </TouchableOpacity>
-
-                            <TouchableOpacity onPress={onSubmitAsync} style={{borderRadius: 8, backgroundColor: Colors.colorSuccess, paddingHorizontal: 25, height: 37, justifyContent: 'center'}}>
-                                <Text style={[Texts.textBodyWhite, Texts.textBold, {textAlign: 'center'}]}>Ajouter</Text>
-                            </TouchableOpacity>
-                        </View>
+                        <ActionButton 
+                        text="Enregistrer"
+                        type="success"
+                        icon="save"
+                        style={{ alignSelf: 'flex-end' }} 
+                        onPress={HandleSaveAsync} 
+                        isLoading={isLoading} />
                     </View>
                 </ScrollView>
             </View>

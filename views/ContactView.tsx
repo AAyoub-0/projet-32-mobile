@@ -1,5 +1,6 @@
 // react-native
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
 
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -10,8 +11,19 @@ import * as Texts from '../constants/Texts';
 // components
 import Line from '../components/Line';
 import TextInputFlat from '../components/TextInputFlat';
+import ActionButton from "@/components/ActionButton";
+import { A } from "@expo/html-elements";
 
 const ContactView = () => {
+
+    const [isLoading, setIsLoading] = useState(false)
+
+    const SubmitAsync = async () => {
+        setIsLoading(true)
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        setIsLoading(false)
+    }
+
     return(
         <View>
             <Text style={[Texts.textTitle, Texts.textBold, { marginBottom: 15 }]}>Contactez nous</Text>
@@ -26,10 +38,7 @@ const ContactView = () => {
             <TextInputFlat placeholder={"Entrez l'objet du message"} border={[0, 1, 0, 0]} />
             <TextInputFlat height={300} placeholder={"Entrez votre message"} border={[0, 1, 0, 0]} multiline={true} numberOfLines={5} />
 
-            <TouchableOpacity style={styles.submit}>
-                <Text style={{ color: Colors.colorWhite }}>Envoyer</Text>
-                <FontAwesome name="paper-plane" size={20} color={Colors.colorWhite} />
-            </TouchableOpacity>
+            <ActionButton text="Envoyer" icon={"send"} type="success" isLoading={isLoading} style={styles.submit} onPress={SubmitAsync} />
         </View>
     )
 }
@@ -37,14 +46,7 @@ export default ContactView;
 
 const styles = StyleSheet.create({
     submit: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        columnGap: 16,
         alignSelf: 'flex-end',
-        backgroundColor: Colors.colorSuccess,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
         borderRadius: 8,
         marginTop: 23,
     }

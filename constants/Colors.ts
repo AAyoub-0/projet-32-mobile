@@ -19,6 +19,9 @@ export const colorWarningLight = '#F2994A50'
 export const colorDanger = '#EB5757'
 export const colorDangerLight = '#EB575750'
 
+export const colorInfo = '#6FCF97'
+export const colorInfoLight = '#6FCF9750'
+
 export const colorBorder = '#252525'
 export const colorBorderLight = '#25252550'
 

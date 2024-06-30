@@ -10,6 +10,7 @@ import * as Texts from '@/constants/Texts';
 // components
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
+import ActionButton from "@/components/ActionButton";
 
 // models
 import { Evenement } from "@/models/Evenement";
@@ -24,6 +25,8 @@ const EvenementFormulaire: React.FC = () => {
     const [showDate, setShowDate] = useState(false);
     const [lieu, setLieu] = React.useState('');
     const [commentaire, setCommentaire] = React.useState('');
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (parameter) {
@@ -58,7 +61,19 @@ const EvenementFormulaire: React.FC = () => {
         } else {
             setShowDate(true);
         }
-      };
+    };
+
+    const HandleDeleteAsync = async () => {
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setLoading(false);
+    }
+
+    const HandleSaveAsync = async () => {
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setLoading(false);
+    }
 
     return (
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -76,11 +91,7 @@ const EvenementFormulaire: React.FC = () => {
                 <Text style={[Texts.textTitle, Texts.textBold, {maxWidth: '70%'}]} >
                     {titre}
                 </Text>
-                <TouchableOpacity style={{backgroundColor: Colors.colorDanger, padding: 8, borderRadius: 8, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>
-                        Supprimer
-                    </Text>
-                </TouchableOpacity>
+                <ActionButton text="" icon="trash" type="danger" onPress={HandleDeleteAsync} isLoading={loading} />
               </View>
               
               <Line margin={20} width={'100%'} orientation="horizontal" backgroundColor={Colors.colorGray} rounded={false} />
@@ -121,11 +132,7 @@ const EvenementFormulaire: React.FC = () => {
                   <TextInputFlat value={commentaire} onChangeText={text => setCommentaire(text)} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez un commentaire" />
                 </View>
                 
-                  <TouchableOpacity style={{backgroundColor: Colors.colorSuccess, padding: 8, borderRadius: 8, alignSelf: 'flex-end'}}>
-                      <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>
-                          Enregistrer
-                      </Text>
-                  </TouchableOpacity>
+                  <ActionButton style={{ alignSelf: 'flex-end' }} text="Enregistrer" icon="save" type="success" onPress={HandleSaveAsync} isLoading={loading} />
               </View>
             </ScrollView>
           </View>

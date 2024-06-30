@@ -11,6 +11,7 @@ import * as Texts from '../../constants/Texts';
 // components
 import TextInputFlat from '../../components/TextInputFlat';
 import MaterielComponent from "@/components/MaterielComponent";
+import ActionButton from "@/components/ActionButton";
 
 // models
 import { Materiel } from "../../models/Materiel";
@@ -34,6 +35,8 @@ const DemandeValidation: React.FC = () => {
     const [conditions, setConditions] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
+    const [loading, setLoading] = useState<boolean>(false);
+
     useEffect(() => {
         if (parameter) {
             const reservationParsed = Reservation.fromJson(parameter as any);
@@ -42,25 +45,51 @@ const DemandeValidation: React.FC = () => {
         }
     }, []);
 
+    const handleCancelAsync = async () => {
+        setLoading(true);
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Cancel the reservation
+            router.push('/demande');
+        }
+        catch (error) {
+            console.log(error);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
     const SubmitAsync = async () => {
-        if (ValidateSubmit() == false) {
-            console.log(errorMessage)
-            alert(errorMessage as any);
-            return;
+        setLoading(true);
+        try{
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (ValidateSubmit() == false) {
+                console.log(errorMessage)
+                alert(errorMessage as any);
+                return;
+            }
+            if (reservation == null) {
+                alert('Une erreur est survenue lors de la réservation');
+                return;
+            }
+            if(reservation.association) {
+                const association = new Association(0, nom, email, telephone, [reservation], null);
+                reservation.association = association;
+            }
+            if(reservation.particulier) {
+                const particulier = new Particulier(0, nom, prenom, telephone, [reservation]);
+                reservation.particulier = particulier;
+            }
+            alert('Votre demande a bien été prise en compte !');
         }
-        if (reservation == null) {
+        catch (error) {
+            console.log(error);
             alert('Une erreur est survenue lors de la réservation');
-            return;
         }
-        if(reservation.association) {
-            const association = new Association(0, nom, email, telephone, [reservation], null);
-            reservation.association = association;
+        finally {
+            setLoading(false);
         }
-        if(reservation.particulier) {
-            const particulier = new Particulier(0, nom, prenom, telephone, [reservation]);
-            reservation.particulier = particulier;
-        }
-        alert('Votre demande a bien été prise en compte !');
     }
 
     const ValidateSubmit = () => {
@@ -155,13 +184,9 @@ const DemandeValidation: React.FC = () => {
                         </View>
                             
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', columnGap: 10 }}>
-                            <TouchableOpacity style={{borderRadius: 8, backgroundColor: Colors.colorDanger, width: 100, height: 37, justifyContent: 'center'}}>
-                                <Text style={[Texts.textBodyWhite, Texts.textBold, {textAlign: 'center'}]}>Annuler</Text>
-                            </TouchableOpacity>
+                            <ActionButton text="Annuler" type="danger" isLoading={loading} onPress={handleCancelAsync} />
 
-                            <TouchableOpacity onPress={_ => SubmitAsync()} style={{borderRadius: 8, backgroundColor: Colors.colorSuccess, paddingHorizontal: 25, height: 37, justifyContent: 'center'}}>
-                                <Text style={[Texts.textBodyWhite, Texts.textBold, {textAlign: 'center'}]}>Valider la réservation</Text>
-                            </TouchableOpacity>
+                            <ActionButton text="Valider" type="success" isLoading={loading} onPress={SubmitAsync} />
                         </View>
                     </View>
 

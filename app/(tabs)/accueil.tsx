@@ -4,7 +4,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { FontAwesome } from '@expo/vector-icons';
 import Octicons from '@expo/vector-icons/Octicons';
 import React, { useState } from 'react';
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -54,7 +54,9 @@ const Accueil = () => {
                             paddingHorizontal: 20, 
                             height: 120 }} >
                             <View style={styles.hamburger}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    router.push('/utilisateur/Profile');
+                                }}>
                                     <Octicons name="feed-person" size={24} color={Colors.colorWhite} />
                                 </TouchableOpacity>
                             </View>

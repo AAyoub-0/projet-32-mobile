@@ -11,6 +11,7 @@ import * as Texts from '@/constants/Texts';
 // components
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
+import ActionButton from "@/components/ActionButton";
 
 // models
 import { Contact } from "@/models/Contact";
@@ -25,6 +26,7 @@ const ContactFormulaire: React.FC = () => {
     const [objetReponse, setObjetReponse] = React.useState('Re: ');
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (parameter) {
@@ -33,6 +35,13 @@ const ContactFormulaire: React.FC = () => {
             setTitre(contactParsed.nom + ' ' + contactParsed.prenom);
         }
     }, []);
+
+    const HandleSendAsync = async () => {
+        setLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setLoading(false);
+        setModalVisible(false);
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -62,12 +71,7 @@ const ContactFormulaire: React.FC = () => {
                             {contact.message}
                         </Text>
 
-                        <TouchableOpacity onPress={_ => setModalVisible(true)} style={{backgroundColor: Colors.colorSuccess, padding: 8, borderRadius: 8, alignSelf: 'flex-end', flexDirection: 'row', columnGap: 10}}>
-                        <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>
-                            Répondre
-                        </Text>
-                        <FontAwesome name="reply" size={15} color={Colors.colorWhite} />
-                    </TouchableOpacity>
+                        <ActionButton style={{ alignSelf: 'flex-end' }} text="Répondre" icon="reply" type="success" onPress={() => setModalVisible(true)} isLoading={loading} />
                     </View>
 
                     <View style={{ marginBottom: 50 }} />
@@ -104,12 +108,11 @@ const ContactFormulaire: React.FC = () => {
                             border={[1, 1, 1, 1]}
                             borderRadius={8}
                         />
-                        <TouchableOpacity onPress={_ => setModalVisible(false)} style={{backgroundColor: Colors.colorSuccess, padding: 8, borderRadius: 8, alignSelf: 'flex-end', flexDirection: 'row', columnGap: 10}}>
-                            <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>
-                                Envoyer
-                            </Text>
-                            <FontAwesome name="send" size={15} color={Colors.colorWhite} />
-                        </TouchableOpacity>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <ActionButton text="Annuler" type="danger" onPress={() => setModalVisible(false)} isLoading={loading} />
+                            <ActionButton text="Envoyer" type="success" onPress={HandleSendAsync} isLoading={loading} />
+                        </View>
                     </View>
                 </View>
             </Modal>

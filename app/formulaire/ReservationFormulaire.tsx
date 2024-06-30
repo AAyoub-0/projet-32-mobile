@@ -12,9 +12,11 @@ import * as Texts from '@/constants/Texts';
 // components
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
+import ActionButton from "@/components/ActionButton";
 
 // models
 import { Reservation } from "@/models/Reservation";
+import { A } from "@expo/html-elements";
 
 const ReservationFormulaire: React.FC = () => {
 
@@ -28,6 +30,8 @@ const ReservationFormulaire: React.FC = () => {
     const [estSupprimee, setEstSupprimee] = React.useState(false);
     const [titre, setTitre] = useState<string>('');
     const [id, setId] = useState<number>(0);
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (parameter) {
@@ -73,23 +77,35 @@ const ReservationFormulaire: React.FC = () => {
         } else {
             setShowDateReservation(true);
         }
-      };
+    };
 
     const ShowDateRetour = () => {
         if (Platform.OS === 'android') {
-          DateTimePickerComponent.open({
+            DateTimePickerComponent.open({
             value: dateRetour,
             onChange: (_: any, selectedDate: Date) => {
-              const currentDate = selectedDate || dateRetour;
-              setDateRetour(currentDate);
+                const currentDate = selectedDate || dateRetour;
+                setDateRetour(currentDate);
             },
             mode: 'date',
             locale: 'fr'
-          });
+            });
         } else {
             setShowDateRetour(true);
         }
-      };
+    };
+
+    const HandleDeleteAsync = async () => {
+        setIsLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsLoading(false);
+    }
+
+    const HandleSaveAsync = async () => {
+        setIsLoading(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsLoading(false);
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -105,12 +121,10 @@ const ReservationFormulaire: React.FC = () => {
                 <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
 
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                      <Text style={[Texts.textTitle, Texts.textBold]} >
-                      Modifier la réservation n°{id}
-                      </Text>
-                      <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 8, borderRadius: 8, backgroundColor: Colors.colorDanger }}>
-                          <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>Supprimer</Text>
-                      </TouchableOpacity>
+                    <Text style={[Texts.textTitle, Texts.textBold]} >
+                    Modifier la réservation n°{id}
+                    </Text>
+                    <ActionButton text="" icon="trash" type="danger" onPress={HandleDeleteAsync} isLoading={isLoading} />
                   </View>
               
                   <Line marginBottom={20} marginTop={7} width={'100%'} orientation="horizontal" backgroundColor={Colors.colorGray} rounded={false} />
@@ -173,9 +187,7 @@ const ReservationFormulaire: React.FC = () => {
                           </Picker>
                       </View>
 
-                      <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', padding: 8, borderRadius: 8, backgroundColor: Colors.colorSuccess, alignSelf: 'flex-end' }}>
-                          <Text style={[Texts.textSubtitle, Texts.textBold, {color: Colors.colorWhite}]}>Enregistrer</Text>
-                      </TouchableOpacity>
+                    <ActionButton text="Enregistrer" type="success" icon="save" style={{ alignSelf: 'flex-end' }} onPress={HandleSaveAsync} isLoading={isLoading} />
                   </View>
 
                   <View style={{ marginBottom: 80 }} />
