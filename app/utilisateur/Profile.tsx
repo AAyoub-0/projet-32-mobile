@@ -11,6 +11,10 @@ import Checkbox from 'expo-checkbox';
 import * as Colors from '@/constants/Colors';
 import * as Texts from '@/constants/Texts';
 
+// views
+import ConnexionView from '@/views/ConnexionView';
+import ProfileView from '@/views/ProfileView';
+
 // components
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
@@ -46,26 +50,8 @@ const Profile = () => {
             <View style={{ paddingTop: headerHeight, justifyContent: 'center', flex: 1 }}>
                 <ScrollView style={[styles.container]} alwaysBounceVertical={false} bounces={false}>
 
-                  <Image style={{ alignSelf: 'center' }} source={require('@/assets/images/logo-couleur.png')} />
-
-                  <View style={{ flexDirection: 'column', rowGap: 23, marginTop: 33 }}>
-                    <Text style={[Texts.textTitle, Texts.textSemiBold, {textAlign: 'center'}]}>Connexion</Text>
-
-                    <View>
-                      <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Identifiant <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
-                      <TextInputFlat border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez votre identifiant" />
-                    </View>
-
-                    <View>
-                      <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Mot de passe <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
-                      <TextInputFlat border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez votre mot de passe" />
-                      <TouchableOpacity style={{ alignSelf: 'center'}}>
-                        <Text style={[Texts.textLink, Texts.textBold, {marginTop: 10}]}>Mot de passe oublié ?</Text>
-                      </TouchableOpacity>
-                    </View>
-
-                    <ActionButton text="Connexion" type="success" isLoading={isLoading} onPress={SubmitAsync} style={{ marginTop: 23 }} />
-                  </View>
+                  {/* <ConnexionView /> */}
+                  <ProfileView />
 
                   <View style={{ marginBottom: 80 }} />
 

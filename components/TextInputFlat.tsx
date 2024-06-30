@@ -20,6 +20,7 @@ type Props = {
     backgroundColor?: ColorValue;
     rightIcon?: any;
     leftIcon?: any;
+    disabled?: boolean;
 }
 
 let _borderColors: ColorValue;
@@ -27,7 +28,7 @@ let _borderColors: ColorValue;
 const TextInputFlat: React.FC<Props> = ({ placeholder, value, 
     onChangeText, secureTextEntry, keyboardType, border = [1, 1, 0, 0],
     multiline, numberOfLines, maxLength, height = undefined, autoFocus, borderLight = false,
-    backgroundColor = Colors.colorWhite, borderRadius = 0, rightIcon, leftIcon }) => {
+    backgroundColor = Colors.colorWhite, borderRadius = 0, rightIcon, leftIcon, disabled }) => {
         
     if (borderLight) _borderColors = Colors.colorBorderLight;
     else _borderColors = Colors.colorWhite;
@@ -61,6 +62,7 @@ const TextInputFlat: React.FC<Props> = ({ placeholder, value,
             numberOfLines={numberOfLines}
             maxLength={maxLength}
             autoFocus={autoFocus}
+            editable={!disabled}
             />
             {rightIcon && <FontAwesome name={rightIcon} size={24} color={Colors.colorGray} style={{position: 'absolute', right: iconTop, top: iconTop}} />}
         </View>
