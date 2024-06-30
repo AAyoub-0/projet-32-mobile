@@ -16,6 +16,9 @@ import ActionButton from "@/components/ActionButton";
 // models
 import { Materiel } from "../../models/Materiel";
 import { Reservation } from "@/models/Reservation";
+import { Association } from "@/models/Association";
+import { Particulier } from "@/models/Particulier";
+import { StatutReservationEnum } from "@/models/StatutReservationEnum";
 
 const DemandeMateriel: React.FC  = () => {
 
@@ -36,6 +39,9 @@ const DemandeMateriel: React.FC  = () => {
         if (parameter) {
             const materielParsed = Materiel.fromJson(parameter as any);
             setMateriel(materielParsed);
+            if (materielParsed.pourAssociation) {
+                setAssociation(true);
+            }
         }
     }, []);
     
@@ -100,7 +106,9 @@ const DemandeMateriel: React.FC  = () => {
 
         try{
             if (validationSubmit()) {
-                const reservation = new Reservation(0, dateReservation, dateRendu, materiel, parseInt(quantite), 'En attente', null, null);
+                const reservation = new Reservation(0, dateReservation, dateRendu, materiel, parseInt(quantite), StatutReservationEnum.EN_ATTENTE, null, null);
+                if(association) reservation.association = new Association(0, '', '', '', [], null);
+                else reservation.particulier = new Particulier(0, '', '', '', []);
                 router.push({
                     pathname: '/demande/DemandeValidation',
                     params: { parameter: Reservation.toJson(reservation) }
@@ -164,6 +172,33 @@ const DemandeMateriel: React.FC  = () => {
                     </Text>
 
                     <View style={{ flexDirection: 'column', rowGap: 23 }}>
+                        <View>
+                            <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>
+                                Vous êtes
+                            </Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'stretch', justifyContent: 'space-between', backgroundColor: Colors.colorPrimaryLight2, borderRadius: 8, height: 60 }}>
+                                <TouchableOpacity onPress={() => setAssociation(true)} style={{ flex: .5, alignItems: 'center', justifyContent: 'center', backgroundColor: association ? Colors.colorPrimary : 'transparent', borderRadius: 8 }}>
+                                    <Text style={[Texts.textBody, Texts.textBold, {color: Colors.colorWhite}]}>
+                                        Association
+                                    </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                        if(materiel.pourAssociation) { alert('Ce matériel est réservé aux associations'); return };
+                                        setAssociation(false)
+                                    }} style={{ flex: .5, alignItems: 'center', justifyContent: 'center', backgroundColor: !association ? Colors.colorPrimary : 'transparent', borderRadius: 8 }}>
+                                    <Text style={[Texts.textBody, Texts.textBold, {color: Colors.colorWhite}]}>
+                                        Particulier
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            {materiel.pourAssociation && (
+                                <Text style={[Texts.textCaption, Texts.textBold, {color: Colors.colorDanger, marginTop: 5}]}>
+                                    Ce matériel est réservé aux associations
+                                </Text>
+                            
+                            )}
+                        </View>
+
                         <View>
                             <Text style={[Texts.textLabel, Texts.textSemiBold]}>Matériel choisi</Text>
                             <MaterielComponent materiel={materiel} showPrice={true} disabled={true} />

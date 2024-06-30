@@ -1,10 +1,13 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Modal } from "react-native";
 import { useHeaderHeight } from '@react-navigation/elements';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import Octicons from '@expo/vector-icons/Octicons';
 import { Stack, router } from "expo-router";
+
+// services
+import { getMateriels } from "@/services/MaterielService";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -21,18 +24,45 @@ import MaterielComponent from "@/components/MaterielComponent";
 import { Evenement } from '@/models/Evenement';
 import { Materiel } from "@/models/Materiel";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ActionButton from "@/components/ActionButton";
 
 const Demande = () => {
 
-    const headerHeight = useHeaderHeight()
+    const [loading, setLoading] = useState(true);
+    const [materiels, setMateriels] = useState<Materiel[]>([]);
+    const [showAssociationModal, setShowAssociationModal] = useState(false);
+    const [selectedMateriel, setSelectedMateriel] = useState<Materiel | undefined>(undefined);
 
-    const materiel = new Materiel(1, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel2 = new Materiel(2, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel3 = new Materiel(3, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel4 = new Materiel(4, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel5 = new Materiel(5, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
+    useEffect(() => {
+        getMateriels().then((materiels) => {
+            setMateriels(materiels);
+            setLoading(false);
+        });
+    }, []);
 
-    const materiels = [materiel, materiel2, materiel3, materiel4, materiel5];
+    useEffect(() => {
+        if(selectedMateriel?.pourAssociation == true) {
+            setShowAssociationModal(true);
+        } else HandleNext();
+
+    }, [selectedMateriel]);
+
+    const HandleNext = () => {
+        if (selectedMateriel == undefined) return;
+        if (showAssociationModal) setShowAssociationModal(false);
+        router.push({
+            pathname: '/demande/DemandeMateriel',
+            params: { 
+                parameter: Materiel.toJson(selectedMateriel)
+            }
+        })
+    }
+
+    if (loading) {
+        return (
+            <ActivityIndicator size="large" color={Colors.colorPrimary} />
+        )
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -58,41 +88,64 @@ const Demande = () => {
             <View>
                 <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
 
-                <View>
-                    <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]} >
-                        Demande de matériel
-                    </Text>
+                    <View>
+                        <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]} >
+                            Demande de matériel
+                        </Text>
 
-                    <Text style={[Texts.textSubtitle, Texts.textBold, {marginBottom: 23}]}>
-                        Les demandes de locations sont destinées uniquement aux habitants de Vaulx Milieu. Le matériel loué ne peut pas quitter la commune de Vaulx Milieu.
-                    </Text>
+                        <Text style={[Texts.textSubtitle, Texts.textBold, {marginBottom: 23}]}>
+                            Les demandes de locations sont destinées uniquement aux habitants de Vaulx Milieu. Le matériel loué ne peut pas quitter la commune de Vaulx Milieu.
+                        </Text>
 
-                    <Text style={[Texts.textBodyPrimary, Texts.textBold, {marginBottom: 23}]}>
-                        Liste du matériel
-                    </Text>
+                        <Text style={[Texts.textBodyPrimary, Texts.textBold, {marginBottom: 23}]}>
+                            Liste du matériel
+                        </Text>
 
-                    <View style={{marginBottom: 23}}>
-                        <View style={{ flexDirection: 'column', rowGap: 10 }}>
-                            <Text style={[Texts.textBodySmall2, Texts.textSemiBold]}>
-                                Sélectionnez le matériel souhaité
-                            </Text>
-                            <TextInputFlat rightIcon={'search'} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Rechercher un matériel" />
+                        <View style={{marginBottom: 23}}>
+                            <View style={{ flexDirection: 'column', rowGap: 10 }}>
+                                <Text style={[Texts.textBodySmall2, Texts.textSemiBold]}>
+                                    Sélectionnez le matériel souhaité
+                                </Text>
+                                <TextInputFlat rightIcon={'search'} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Rechercher un matériel" />
+                            </View>
+
+                            {materiels.map((materiel, index) => {
+                                return (
+                                    <MaterielComponent key={index} materiel={materiel} showPrice={true} onPress={() => {setSelectedMateriel(materiel)}} />
+                                )
+                            })}
                         </View>
-
-                        {materiels.map((materiel, index) => (
-                            <MaterielComponent key={index} materiel={materiel} showPrice={true} onPress={() => {
-                                    router.push({
-                                        pathname: '/demande/DemandeMateriel',
-                                        params: { parameter: Materiel.toJson(materiel) }
-                                    })
-                            }} />
-                        ))}
-                </View>
-        </View>
+                    </View>
                     
                     <View style={{ height: 50 }}></View>
+
                 </ScrollView>
             </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showAssociationModal}
+                onRequestClose={() => setShowAssociationModal(false)}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+                    <View style={{ backgroundColor: Colors.colorWhite, borderRadius: 8, padding: 20, width: '80%' }}>
+                        <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]}>
+                            Attention ce matériel est réservé aux associations
+                        </Text>
+                        <Text style={[Texts.textBody, Texts.textBold, {marginBottom: 23, color: Colors.colorDanger}]}>
+                            Ce matériel est destiné uniquement aux associations. Veuillez nous contacter pour plus d'informations.
+                            <Text style={[Texts.textBody, Texts.textBold]}>
+                                {'\n'}Si vous êtes une association, veuillez continuer.
+                            </Text>
+                        </Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                            <ActionButton text="Annuler" type="danger" onPress={() => setShowAssociationModal(false)} isLoading={false} />
+                            <ActionButton text="Continuer" type="warning" icon={'arrow-circle-right'} onPress={HandleNext} isLoading={loading} />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
         </KeyboardAvoidingView>
     )
 }

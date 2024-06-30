@@ -25,4 +25,6 @@ export class Materiel {
     static toJson(materiel: Materiel): string {
         return JSON.stringify(materiel);
     }
+
+    static apiImageUrl = 'http://192.168.1.83:8000/uploads/materiels/'
 }

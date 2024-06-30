@@ -45,5 +45,5 @@ export class Evenement {
         return JSON.stringify(evenement);
     }
 
-    static apiImageUrl = 'http://192.168.1.215:8000/uploads/medias/';
+    static apiImageUrl = 'http://192.168.1.83:8000/uploads/medias/';
 }

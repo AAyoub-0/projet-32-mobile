@@ -4,6 +4,9 @@ import { useLocalSearchParams, Stack, router } from 'expo-router';
 import React, { useState, useEffect } from 'react';
 import Checkbox from 'expo-checkbox';
 
+// services
+import { createReservation } from '@/services/ReservationService';
+
 // constants
 import * as Colors from '../../constants/Colors';
 import * as Texts from '../../constants/Texts';
@@ -27,11 +30,11 @@ const DemandeValidation: React.FC = () => {
     const [reservation, setReservation] = useState<Reservation | null>(null);
     const [materiel, setMateriel] = useState<Materiel>(new Materiel(0, '', 1, false, 1, 1, 'http://image.com'));
     const [association, setAssociation] = useState<boolean>(false);
-    const [email, setEmail] = useState<string>('');
-    const [nom, setNom] = useState<string>('');
-    const [prenom, setPrenom] = useState<string>('');
-    const [telephone, setTelephone] = useState<string>('');
-    const [remarques, setRemarques] = useState<string>('');
+    const [email, setEmail] = useState<string>('ayoub@gmail.com');
+    const [nom, setNom] = useState<string>('Boumallassa');
+    const [prenom, setPrenom] = useState<string>('Ayoub');
+    const [telephone, setTelephone] = useState<string>('0617876766');
+    const [remarques, setRemarques] = useState<string>('dsqdqsdsqdqsd');
     const [conditions, setConditions] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -42,6 +45,15 @@ const DemandeValidation: React.FC = () => {
             const reservationParsed = Reservation.fromJson(parameter as any);
             setReservation(reservationParsed);
             setMateriel(reservationParsed.materiel);
+            
+            if (reservationParsed.association != null) {
+                console.log('association');
+                setAssociation(true);
+            } 
+            if (reservationParsed.particulier != null) {
+                console.log('particulier');
+                setAssociation(false);
+            }
         }
     }, []);
 
@@ -74,14 +86,15 @@ const DemandeValidation: React.FC = () => {
                 return;
             }
             if(reservation.association) {
-                const association = new Association(0, nom, email, telephone, [reservation], null);
+                const association = new Association(0, nom, telephone, email, [], null);
                 reservation.association = association;
             }
             if(reservation.particulier) {
-                const particulier = new Particulier(0, nom, prenom, telephone, [reservation]);
+                const particulier = new Particulier(0, nom, prenom, telephone, [], email);
                 reservation.particulier = particulier;
             }
-            alert('Votre demande a bien été prise en compte !');
+            
+            await createReservationAsync();
         }
         catch (error) {
             console.log(error);
@@ -107,10 +120,29 @@ const DemandeValidation: React.FC = () => {
             setErrorMessage('Numéro de téléphone invalide');
             return false;
         }
+
+        if (conditions == false) {
+            setErrorMessage('Veuillez accepter les conditions générales');
+            return false;
+        }
         
         setErrorMessage('');
         return true;
     }
+
+    const createReservationAsync = async () => {
+        if (reservation == null) {
+            console.log('La réservation est vide');
+            return;
+        }
+        createReservation(reservation).then((reservationCreated) => {
+            console.log('Réservation créée:', reservationCreated);
+            if(reservationCreated) {
+                alert('Votre demande a bien été prise en compte !');
+                router.push('/demande');
+            }
+        });
+    };
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -124,11 +156,11 @@ const DemandeValidation: React.FC = () => {
             <View>
                 <ScrollView style={styles.container} alwaysBounceVertical={false} bounces={false}>
                     <Text style={[Texts.textTitle, Texts.textBold, {marginBottom: 23}]} >
-                        Demande de matériel : Particuliers
+                        Demande de matériel
                     </Text>
 
                     <Text style={[Texts.textBodyPrimary, Texts.textBold, {marginBottom: 23}]}>
-                        Informations personnelles
+                        Informations personnelles {association ? 'de l\'association' : 'du particulier'}
                     </Text>
 
                     <Text style={[Texts.textSubtitle, Texts.textSemiBold, {marginBottom: 23}]}>
@@ -146,10 +178,12 @@ const DemandeValidation: React.FC = () => {
                             <TextInputFlat value={nom} onChangeText={(text) => setNom(text)} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez votre nom" />
                         </View>
                         
-                        <View>
-                            <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Prénom <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
-                            <TextInputFlat value={prenom} onChangeText={(text) => setPrenom(text)} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez votre prénom" />
-                        </View>
+                        {association == false && (
+                            <View>
+                                <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Prénom <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
+                                <TextInputFlat value={prenom} onChangeText={(text) => setPrenom(text)} border={[1, 1, 1, 1]} borderRadius={8} placeholder="Entrez votre prénom" />
+                            </View>
+                        )}
                         
                         <View>
                             <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Téléphone <Text style={[Texts.textLabelRequired, Texts.textBold]}>*</Text></Text>
@@ -158,7 +192,15 @@ const DemandeValidation: React.FC = () => {
 
                         <View>
                             <Text style={[Texts.textLabel, Texts.textSemiBold]}>Matériel sélectionné</Text>
-                            <MaterielComponent materiel={materiel} showPrice={true} disabled={true} />
+                            <MaterielComponent  materiel={materiel} showQuantity={false} showPrice={true} disabled={true} />
+                            <Text style={[Texts.textCaption, Texts.textSemiBold, {marginTop: 5}]}>
+                                Quantité voulu : {reservation?.quantite} {'\n'}
+                                Prix total : {reservation && (materiel.prix * reservation?.quantite)} €
+                            </Text>
+                            <Text style={[Texts.textCaption, Texts.textSemiBold, {marginTop: 5}]}>
+                                Date de réservation : Le {reservation && Reservation?.dateToText(reservation?.dateReservation)}{'\n'}
+                                Date de retour : Le {reservation && Reservation?.dateToText(reservation?.dateRetour)}
+                            </Text>
                         </View>
 
                         <View>

@@ -6,12 +6,14 @@ export class Particulier {
     prenom: string;
     telephone: string;
     reservations?: Reservation[];
+    email: string;
 
-    constructor(id: number, nom: string, prenom: string, telephone: string, reservations: Reservation[]) {
+    constructor(id: number, nom: string, prenom: string, telephone: string, reservations: Reservation[], email: string) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.telephone = telephone;
         this.reservations = reservations;
+        this.email = email;
     }
 }

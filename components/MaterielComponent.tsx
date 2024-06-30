@@ -8,11 +8,12 @@ import { Materiel } from '../models/Materiel';
 type Props = {
     materiel: Materiel,
     showPrice?: boolean,
+    showQuantity?: boolean,
     disabled?: boolean,
     onPress?: () => void
 }
 
-const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, disabled, onPress }) => {
+const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, showQuantity = true, disabled, onPress }) => {
 
     if (materiel == undefined) {
         return null;
@@ -23,15 +24,17 @@ const MaterielComponent: React.FC<Props> = ({ materiel, showPrice, disabled, onP
     return (
         <TouchableOpacity style={styles.materiel} disabled={disabled} onPress={onPress}>
             <Image style={{ width: 97, height: 94, borderTopLeftRadius: 8, borderBottomLeftRadius: 8 }} 
-                    source={{ uri: imageUri }} />
+                    source={{ uri: Materiel.apiImageUrl+imageUri }} />
             <View style={{ justifyContent: 'space-between', paddingHorizontal: 12, paddingVertical: 8, flex: 1 }}>
                 <Text style={[Texts.textBody, Texts.textSemiBold]}>
                     {materiel.libelle}
                 </Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Text style={[Texts.textCaption, Texts.textSemiBold]}>
-                        Quantité : {materiel.nbExemplairesDisponibles}
-                    </Text>
+                    {showQuantity && (
+                        <Text style={[Texts.textCaption, Texts.textSemiBold]}>
+                            Quantité : {materiel.nbExemplairesDisponibles}
+                        </Text>
+                    )}
                     <Text style={[Texts.textCaptionBlue, Texts.textSemiBold]}>
                     {(showPrice && materiel.prix) && 
                         (`Prix : ${materiel.prix} € / Weekend`)
