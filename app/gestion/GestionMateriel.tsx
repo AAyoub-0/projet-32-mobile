@@ -1,7 +1,12 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { Stack, Link, router } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { useIsFocused } from '@react-navigation/native';
+
+// services
+import { getMateriels } from "@/services/MaterielService";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -17,14 +22,22 @@ import { Materiel } from "@/models/Materiel";
 
 
 const GestionMateriel = ({ }) => {
+    
+    const [materiels, setMateriels] = useState<Materiel[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const materiel = new Materiel(1, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel2 = new Materiel(2, 'Parapluie', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel3 = new Materiel(3, 'Chaise de camping', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel4 = new Materiel(4, 'Table 10x2m', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
-    const materiel5 = new Materiel(5, 'Camion', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
+    const isFocused = useIsFocused();
 
-    const materiels = [materiel, materiel2, materiel3, materiel4, materiel5];
+    useEffect(() => {
+        if (isFocused){
+            getMateriels().then(materiels => {
+                setMateriels(materiels);
+                setLoading(false);
+            });
+        }
+    }, [isFocused]);
+
+    if(loading) return (<ActivityIndicator size="large" color={Colors.colorPrimary} />);
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

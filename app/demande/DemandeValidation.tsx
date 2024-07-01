@@ -47,11 +47,9 @@ const DemandeValidation: React.FC = () => {
             setMateriel(reservationParsed.materiel);
             
             if (reservationParsed.association != null) {
-                console.log('association');
                 setAssociation(true);
             } 
             if (reservationParsed.particulier != null) {
-                console.log('particulier');
                 setAssociation(false);
             }
         }
@@ -61,7 +59,6 @@ const DemandeValidation: React.FC = () => {
         setLoading(true);
         try {
             await new Promise(resolve => setTimeout(resolve, 1000));
-            // Cancel the reservation
             router.push('/demande');
         }
         catch (error) {

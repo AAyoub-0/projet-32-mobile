@@ -108,7 +108,7 @@ const DemandeMateriel: React.FC  = () => {
             if (validationSubmit()) {
                 const reservation = new Reservation(0, dateReservation, dateRendu, materiel, parseInt(quantite), StatutReservationEnum.EN_ATTENTE, null, null);
                 if(association) reservation.association = new Association(0, '', '', '', [], null);
-                else reservation.particulier = new Particulier(0, '', '', '', []);
+                else reservation.particulier = new Particulier(0, '', '', '', [], '');
                 router.push({
                     pathname: '/demande/DemandeValidation',
                     params: { parameter: Reservation.toJson(reservation) }

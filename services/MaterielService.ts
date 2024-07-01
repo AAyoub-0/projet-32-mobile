@@ -22,7 +22,7 @@ export const getMateriels = async (): Promise<Materiel[]> => {
                 data.prix,
                 data.pourAssociation,
                 data.nbExemplaires,
-                data.nbExemplairesDisponibles,
+                data.nbExemplairesDispo,
                 data.image
             );
         });
@@ -44,7 +44,7 @@ export const getMaterielById = async (id: number): Promise<Materiel> => {
             response.data.prix,
             response.data.pourAssociation,
             response.data.nbExemplaires,
-            response.data.nbExemplairesDisponibles,
+            response.data.nbExemplairesDispo,
             response.data.image
         );
 
@@ -54,9 +54,13 @@ export const getMaterielById = async (id: number): Promise<Materiel> => {
     }
 };
 
-export const createMateriel = async (materiel: Materiel): Promise<Materiel> => {
+export const createMateriel = async (materiel: FormData): Promise<Materiel> => {
     try {
-        const response = await api.post('/materiels', Materiel.toJson(materiel));
+        const response = await api.post('/materiels', materiel, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+        });
         
         return new Materiel(
             response.data.id,
@@ -64,7 +68,7 @@ export const createMateriel = async (materiel: Materiel): Promise<Materiel> => {
             response.data.prix,
             response.data.pourAssociation,
             response.data.nbExemplaires,
-            response.data.nbExemplairesDisponibles,
+            response.data.nbExemplairesDispo,
             response.data.image
         );
     } catch (error) {
@@ -73,9 +77,14 @@ export const createMateriel = async (materiel: Materiel): Promise<Materiel> => {
     }
 };
 
-export const updateMateriel = async (id: number, materiel: Materiel): Promise<Materiel> => {
+export const updateMateriel = async (id: number, materiel: FormData): Promise<Materiel> => {
     try {
-        const response = await api.put(`/materiels/${id}`, Materiel.toJson(materiel));
+        console.log('updateMateriel', id, materiel);
+        const response = await api.post(`/materiels/${id}`, materiel, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+        });
         
         return new Materiel(
             response.data.id,
@@ -83,7 +92,7 @@ export const updateMateriel = async (id: number, materiel: Materiel): Promise<Ma
             response.data.prix,
             response.data.pourAssociation,
             response.data.nbExemplaires,
-            response.data.nbExemplairesDisponibles,
+            response.data.nbExemplairesDispo,
             response.data.image
         );
     } catch (error) {

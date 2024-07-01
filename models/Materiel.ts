@@ -6,6 +6,7 @@ export class Materiel {
     nbExemplaires: number;
     nbExemplairesDisponibles: number;
     imageUrl?: string;
+    imageFile?: string;
 
     constructor(id: number, libelle: string, prix: number, pourAssociation: boolean, nbExemplaires: number, nbExemplairesDisponibles: number, imageUrl?: string) {
         this.id = id;
@@ -24,6 +25,10 @@ export class Materiel {
 
     static toJson(materiel: Materiel): string {
         return JSON.stringify(materiel);
+    }
+
+    setFile(file: string) {
+        this.imageFile = file;
     }
 
     static apiImageUrl = 'http://192.168.1.83:8000/uploads/materiels/'
