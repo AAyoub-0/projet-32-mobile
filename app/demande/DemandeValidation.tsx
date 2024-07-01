@@ -36,7 +36,6 @@ const DemandeValidation: React.FC = () => {
     const [telephone, setTelephone] = useState<string>('0617876766');
     const [remarques, setRemarques] = useState<string>('dsqdqsdsqdqsd');
     const [conditions, setConditions] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -74,8 +73,6 @@ const DemandeValidation: React.FC = () => {
         try{
             await new Promise(resolve => setTimeout(resolve, 1000));
             if (ValidateSubmit() == false) {
-                console.log(errorMessage)
-                alert(errorMessage as any);
                 return;
             }
             if (reservation == null) {
@@ -104,26 +101,25 @@ const DemandeValidation: React.FC = () => {
 
     const ValidateSubmit = () => {
         if (email == '' || nom == '' || prenom == '' || telephone == '' || remarques == '') {
-            setErrorMessage('Veuillez remplir tous les champs obligatoires');
+            alert('Veuillez remplir tous les champs obligatoires');
             return false;
         }
         
         if (RegExp('^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$').test(email) == false) {
-            setErrorMessage('Adresse e-mail invalide');
+            alert('Adresse e-mail invalide');
             return false;
         }
 
         if (RegExp('^[0-9]{10}$').test(telephone) == false) {
-            setErrorMessage('Numéro de téléphone invalide');
+            alert('Numéro de téléphone invalide');
             return false;
         }
 
         if (conditions == false) {
-            setErrorMessage('Veuillez accepter les conditions générales');
+            alert('Veuillez accepter les conditions générales');
             return false;
         }
         
-        setErrorMessage('');
         return true;
     }
 

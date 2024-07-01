@@ -4,6 +4,10 @@ import {Picker} from '@react-native-picker/picker';
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import Checkbox from 'expo-checkbox';
+import { useNavigation } from 'expo-router';
+
+// services
+import { patchReservation } from '@/services/ReservationService';
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -16,12 +20,18 @@ import ActionButton from "@/components/ActionButton";
 
 // models
 import { Reservation } from "@/models/Reservation";
-import { A } from "@expo/html-elements";
+import { ReservationMateriel } from "@/models/ReservationMateriel";
+import { Association } from "@/models/Association";
+import { Particulier } from "@/models/Particulier";
+import { ReservationCreation } from "@/models/ReservationCreation";
 
 const ReservationFormulaire: React.FC = () => {
 
+    const navigation = useNavigation();
+
     const { parameter } = useLocalSearchParams();
 
+    const [reservationMateriels, setReservationMateriels] = useState<string[]>([]);
     const [dateReservation, setDateReservation] = React.useState<Date>(new Date());
     const [statutReservation, setStatutReservation] = React.useState('En cours');
     const [dateRetour, setDateRetour] = React.useState<Date>(new Date());
@@ -30,24 +40,40 @@ const ReservationFormulaire: React.FC = () => {
     const [estSupprimee, setEstSupprimee] = React.useState(false);
     const [titre, setTitre] = useState<string>('');
     const [id, setId] = useState<number>(0);
+    const [association, setAssociation] = useState<Association | null>(null);
+    const [particulier, setParticulier] = useState<Particulier | null>(null);
 
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if (parameter) {
-            const reservationParsed = Reservation.fromJson(parameter as any);
-            reservationParsed.dateReservation = new Date(reservationParsed.dateReservation);
-            reservationParsed.dateRetour = new Date(reservationParsed.dateRetour);
-            setDateReservation(reservationParsed.dateReservation as Date);
-            setStatutReservation(reservationParsed.statutReservation);
-            setDateRetour(reservationParsed.dateRetour as Date);
-            setId(reservationParsed.id);
+            const reservationParsed = ReservationMateriel.fromJson(parameter as any);
+            console.log('parameter', (parameter as any));
+            reservationParsed.reservation.dateReservation = new Date(reservationParsed.reservation.dateReservation);
+            reservationParsed.reservation.dateRetour = new Date(reservationParsed.reservation.dateRetour);
             
-            if(reservationParsed.association) {
-                setTitre(reservationParsed.association.nom);
+            const reservationMaterielsString: string[] = [];
+
+            reservationParsed.reservation.reservationMateriels.forEach((reservationMateriel: any) => {
+                reservationMaterielsString.push('/api/reservation_materiels/' + reservationMateriel.id);
+            });
+
+            setReservationMateriels(reservationMaterielsString);
+
+            setDateReservation(reservationParsed.reservation.dateReservation as Date);
+            setStatutReservation(reservationParsed.reservation.statutReservation);
+            setDateRetour(reservationParsed.reservation.dateRetour as Date);
+            setId(reservationParsed.reservation.id as number);
+            
+            if(reservationParsed.reservation.association) {
+                const association = Association.fromJson(reservationParsed.reservation.association);
+                setAssociation(association);
+                setTitre(association.nom);
             } 
-            else if(reservationParsed.particulier) {
-                setTitre(reservationParsed.particulier.nom);
+            else if(reservationParsed.reservation.particulier) {
+                const particulier = Particulier.fromJson(reservationParsed.reservation.particulier);
+                setParticulier(particulier);
+                setTitre(particulier.nom + ' ' + particulier.prenom);
             }
             else {
                 setTitre('Inconnu');
@@ -98,12 +124,48 @@ const ReservationFormulaire: React.FC = () => {
     const HandleDeleteAsync = async () => {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsLoading(false);
+        try{
+            await patchReservation(new ReservationCreation(
+                dateReservation,
+                dateRetour,
+                reservationMateriels,
+                'Supprimée',
+                association ? '/api/associations/' + association?.id : null,
+                particulier ? '/api/particuliers/' + particulier?.id : null
+            ), id);
+            alert('La réservation a été supprimée avec succès');
+            navigation.goBack();
+        }
+        catch(error){
+            console.error(error);
+        }
+        finally{
+            setIsLoading(false);
+        }
     }
 
     const HandleSaveAsync = async () => {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
+        try{
+
+            setIsLoading(true);
+            await patchReservation(new ReservationCreation(
+                dateReservation,
+                dateRetour,
+                reservationMateriels,
+                statutReservation,
+                association ? '/api/associations/' + association?.id : null,
+                particulier ? '/api/particuliers/' + particulier?.id : null
+            ), id);
+            alert('La réservation a été modifiée avec succès');
+        }
+        catch(error){
+            console.error(error);
+        }
+        finally{
+            setIsLoading(false);
+        }
         setIsLoading(false);
     }
 
@@ -122,7 +184,7 @@ const ReservationFormulaire: React.FC = () => {
 
                   <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     <Text style={[Texts.textTitle, Texts.textBold]} >
-                    Modifier la réservation n°{id}
+                        Modifier la réservation n°{id}
                     </Text>
                     <ActionButton text="" icon="trash" type="danger" onPress={HandleDeleteAsync} isLoading={isLoading} />
                   </View>
@@ -134,6 +196,9 @@ const ReservationFormulaire: React.FC = () => {
                       <View>
                           <Text style={[Texts.textLabel, Texts.textSemiBold, {marginBottom: 5}]}>Créateur </Text>
                           <Text style={[Texts.textBody, Texts.textSemiBold]}>{titre}</Text>
+                          <Text style={[Texts.textLabel, Texts.textSemiBold, {color: Colors.colorBlackLight2}]}>
+                                {association && association.nom ? 'Association' : 'Particulier'}
+                          </Text>
                       </View>
 
                       <View>
@@ -182,8 +247,9 @@ const ReservationFormulaire: React.FC = () => {
                               selectedValue={statutReservation}
                               onValueChange={(itemValue, itemIndex) => setStatutReservation(itemValue)}
                               style={{width: '100%', height: 90, position: 'relative', top: -70}}>
-                              <Picker.Item label="En cours" value="En cours" />
-                              <Picker.Item label="Terminée" value="Terminée" />
+                                <Picker.Item label="En attente" value="En attente" />
+                                <Picker.Item label="En cours" value="En cours" />
+                                <Picker.Item label="Terminée" value="Terminée" />
                           </Picker>
                       </View>
 

@@ -1,10 +1,14 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import Octicons from '@expo/vector-icons/Octicons';
 import { Stack } from "expo-router";
+import { useIsFocused } from "@react-navigation/native";
+
+// service
+import { getEvenementsByYear } from '@/services/EvenementService';
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -19,12 +23,26 @@ import { Evenement } from '@/models/Evenement';
 
 const Calendrier = () => {
 
-    const evenementFutur = new Evenement(3, 'CSV - TOURNOI u6 u7 - GYMNASE', new Date(2024, 3, 2), 'Salle des fêtes', 'Venez nombreux', false);
-    const evenementFutur2 = new Evenement(4, 'CSV - TOURNOI u8 u9 - GYMNASE', new Date(2024, 3, 9), 'Salle des fêtes', 'Venez nombreux', false);
-    const evenementFutur3 = new Evenement(5, 'CSV - TOURNOI u10 u11 - GYMNASE', new Date(2024, 3, 16), 'Salle des fêtes', 'Venez nombreux', false);
-    const evenementFutur4 = new Evenement(6, 'CSV - TOURNOI u12 u13 - GYMNASE', new Date(2024, 3, 23), 'Salle des fêtes', 'Venez nombreux', false);
+    const isFocused = useIsFocused();
 
-    const evenements = [evenementFutur, evenementFutur2, evenementFutur3, evenementFutur4];
+    const [loading, setLoading] = useState(true);
+    const [evenements, setEvenements] = useState<Evenement[]>([]);
+
+    useEffect(() => {
+        if (isFocused) {
+            getEvenementsByYear(new Date().getFullYear()).then((evenements) => {
+                setEvenements(evenements);
+                setLoading(false);
+            });
+        }
+    }, [isFocused]);
+
+    if(loading) return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size="large" color={Colors.colorPrimary} />
+        </View>
+    )
+
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

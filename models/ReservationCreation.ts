@@ -2,12 +2,12 @@ export class ReservationCreation {
     id?: number | undefined;
     dateReservation: Date;
     dateRetour: Date;
-    reservationMateriels: [];
+    reservationMateriels: string[] | [];
     statutReservation: string;
     association: string | null;
     particulier: string | null;
 
-    constructor(dateReservation: Date, dateRetour: Date, reservationMateriels: [], statutReservation: string, association: string | null, particulier: string | null) {
+    constructor(dateReservation: Date, dateRetour: Date, reservationMateriels: string[] | [], statutReservation: string, association: string | null, particulier: string | null) {
         this.dateReservation = dateReservation;
         this.dateRetour = dateRetour;
         this.reservationMateriels = reservationMateriels;
@@ -17,14 +17,14 @@ export class ReservationCreation {
     }
 
     static fromJson(json: any): ReservationCreation {
-        console.log('json:', json);
+        const jsonObject = JSON.parse(json);
         return new ReservationCreation(
-            json.dateReservation,
-            json.dateRetour,
-            json.reservationMateriels,
-            json.statutReservation,
-            json.association,
-            json.particulier
+            new Date(jsonObject.dateReservation),
+            new Date(jsonObject.dateRetour),
+            jsonObject.reservationMateriels,
+            jsonObject.statutReservation,
+            jsonObject.association,
+            jsonObject.particulier
         );
     }
 

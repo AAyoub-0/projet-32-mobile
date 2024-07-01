@@ -2,6 +2,7 @@
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import { Stack, router } from "expo-router";
 import React, { useState, useEffect } from "react";
+import { useIsFocused } from '@react-navigation/native';
 
 // services 
 import { getReservationMateriels } from "@/services/ReservationMaterielService";
@@ -19,9 +20,12 @@ import ReservationComponent from "@/components/ReservationComponent";
 import { Reservation } from "@/models/Reservation";
 import { Materiel } from "@/models/Materiel";
 import { StatutReservationEnum } from "@/models/StatutReservationEnum";
+import { ReservationMateriel } from "@/models/ReservationMateriel";
 
 
 const GestionReservation = () => {
+
+    const isFocused = useIsFocused();
 
     const materiel = new Materiel(1, 'Remorque réfrigérée de 6m3 en Mono 230 V', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
     const materiel2 = new Materiel(2, 'Parapluie', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
@@ -36,15 +40,19 @@ const GestionReservation = () => {
     const reservation4 = new Reservation(4, new Date(), new Date(), materiel4, 2, StatutReservationEnum.EN_ATTENTE, null, null);
     const reservation5 = new Reservation(5, new Date(), new Date(), materiel5, 1, StatutReservationEnum.TERMINEE, null, null);
 
-    const reservations = [reservation, reservation2, reservation3, reservation4, reservation5];
+    const reservationsE3 = [reservation, reservation2, reservation3, reservation4, reservation5];
     
     const [loading, setLoading] = useState(true);
+    const [reservationsMateriel, setReservationsMateriel] = useState<ReservationMateriel[]>([]);
 
     useEffect(() => {
+        setLoading(true);
         try{
-            getReservationMateriels().then(reservations => {
-                console.log(reservations);
-            });
+            if(isFocused){
+                getReservationMateriels().then(reservations => {
+                    setReservationsMateriel(reservations);
+                });
+            }
         }
         catch(error){
             console.error(error);
@@ -53,12 +61,10 @@ const GestionReservation = () => {
             setLoading(false);
         }
         
-    });
+    }, [isFocused]);
 
     if(loading) return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ActivityIndicator size="large" color={Colors.colorPrimary} />
-        </View>
+        <ActivityIndicator size="large" color={Colors.colorPrimary} />
     );
 
     return (
@@ -83,11 +89,11 @@ const GestionReservation = () => {
                     <Line margin={20} width={'100%'} orientation="horizontal" backgroundColor={Colors.colorGray} rounded={false} />
                     <TextInputFlat placeholder="Rechercher une réservation" border={[1, 1, 1, 1]} borderRadius={8} rightIcon={'search'} />
                     <View style={{ marginVertical: 20, rowGap: 10 }} >
-                        {reservations.map((reservation, index) => (
-                            <ReservationComponent key={index} reservation={reservation} onPress={() => {
+                        {reservationsMateriel.map((rm, index) => (
+                            <ReservationComponent key={index} reservationMateriel={rm} onPress={() => {
                                 router.push({
                                     pathname: '/formulaire/ReservationFormulaire',
-                                    params: { parameter: Reservation.toJson(reservation) }
+                                    params: { parameter: ReservationMateriel.toJson(rm) }
                                 });
                             }} />
                         ))}

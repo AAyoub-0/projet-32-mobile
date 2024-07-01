@@ -2,10 +2,18 @@ import { Particulier } from '@/models/Particulier';
 import axios from 'axios';
 
 const API_URL = 'http://192.168.1.83:8000/api';
+const SERVER_URL = 'http://192.168.1.83:8000';
 
 // Configuration d'axios
 const api = axios.create({
     baseURL: API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+});
+const server = axios.create({
+    baseURL: SERVER_URL,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -24,6 +32,27 @@ const getParticulierByEmail = async (email: string): Promise<Particulier> => {
             response.data[0].reservations,
             response.data[0].email,
         );
+    } catch (error) {
+        console.error('Erreur lors de la récupération du particulier:', error);
+        throw error;
+    }
+}
+
+export const getParticulierByUri = async (uri: string): Promise<Particulier | null> => {
+    try {
+        const response = await server.get(uri);
+        const particulierData = response.data;
+        if (particulierData) {
+            return new Particulier(
+                particulierData.id,
+                particulierData.nom,
+                particulierData.prenom,
+                particulierData.telephone,
+                particulierData.reservations,
+                particulierData.email,
+            );
+        }
+        return null;
     } catch (error) {
         console.error('Erreur lors de la récupération du particulier:', error);
         throw error;

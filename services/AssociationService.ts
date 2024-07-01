@@ -2,10 +2,18 @@ import { Association } from '@/models/Association';
 import axios from 'axios';
 
 const API_URL = 'http://192.168.1.83:8000/api';
+const SERVER_URL = 'http://192.168.1.83:8000';
 
 // Configuration d'axios
 const api = axios.create({
     baseURL: API_URL,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    },
+});
+const server = axios.create({
+    baseURL: SERVER_URL,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -36,6 +44,28 @@ export const getAssociations = async (): Promise<Association[]> => {
         throw error;
     }
 };
+
+export const getAssociationByUri = async (uri: string): Promise<Association | null> => {
+    try {
+        console.log('uri', uri);
+        const response = await server.get(uri);
+        const associationData = response.data;
+        if (associationData) {
+            return new Association(
+                associationData.id,
+                associationData.nom,
+                associationData.telephone,
+                associationData.email,
+                associationData.reservations,
+                associationData.utilisateur
+            );
+        }
+        return null;
+    } catch (error) {
+        console.error('Erreur lors de la récupération de l\'association:', error);
+        throw error;
+    }
+}
 
 export const getAssociationByEmail = async (email: string): Promise<Association | null> => {
     try {

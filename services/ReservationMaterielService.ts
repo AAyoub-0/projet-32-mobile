@@ -29,11 +29,12 @@ export const getReservationMateriels = async (): Promise<ReservationMateriel[]> 
         const response = await api.get('/reservation_materiels');
 
         const reservationMateriels: ReservationMateriel[] = [];
-        
+
         for (const json of response.data) {
             const reservation = await getReservationsByUri(json.reservation);
             const materiel = await getMaterielByUri(json.materiel);
-            reservationMateriels.push(new ReservationMateriel(json.id, reservation, materiel, json.quantite));
+            if(reservation != null)
+                reservationMateriels.push(new ReservationMateriel(json.id, reservation, materiel, json.quantite));
         }
 
         return reservationMateriels;
@@ -46,14 +47,13 @@ export const getReservationMateriels = async (): Promise<ReservationMateriel[]> 
 
 export const createReservationMateriel = async (reservation: ReservationMateriel): Promise<ReservationMateriel> => {
     try {
-        
         const json = {
             reservation: '/api/reservations/' + reservation.reservation.id,
             materiel: '/api/materiels/' + reservation.materiel.id,
             quantite: reservation.quantite
         }
-        console.log('json:', json);
         const response = await api.post('/reservation_materiels', JSON.stringify(json));
+        console.log('response:', response.data as ReservationMateriel);
         return response.data as ReservationMateriel;
     } catch (error) {
         throw error;

@@ -31,7 +31,6 @@ const DemandeMateriel: React.FC  = () => {
     const [showDateReservation, setShowDateReservation] = useState(false);
     const [showDateRetour, setShowDateRetour] = useState(false);
     const [association, setAssociation] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>('');
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -114,9 +113,7 @@ const DemandeMateriel: React.FC  = () => {
                     params: { parameter: Reservation.toJson(reservation) }
                 });
             }
-            else{
-                alert(errorMessage as any);
-            }
+            return;
         } 
         catch(error){
             console.log(error);
@@ -128,21 +125,20 @@ const DemandeMateriel: React.FC  = () => {
 
     const validationSubmit = () => {
         if (parseInt(quantite) === 0 || parseInt(quantite) < 0 || dateReservation === new Date() || dateRendu === new Date()) {
-            setErrorMessage('Veuillez remplir les champs obligatoires');
+            alert('Veuillez remplir les champs obligatoires');
             return false;
         }
 
         if (dateReservation < new Date()) {
-            setErrorMessage('La date de réservation doit être supérieure à la date du jour');
+            alert('La date de réservation doit être supérieure à la date du jour');
             return false;
         }
 
         if (dateReservation > dateRendu) {
-            setErrorMessage('La date de réservation doit être inférieure à la date de retour');
+            alert('La date de réservation doit être inférieure à la date de retour');
             return false;
         }
 
-        setErrorMessage('');
         return true;
     }
 

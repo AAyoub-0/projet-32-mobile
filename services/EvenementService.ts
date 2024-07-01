@@ -118,8 +118,9 @@ export const getFourNextEvents = async (): Promise<Evenement[]> => {
             );
         });
 
-        evenements.sort((a: Evenement, b: Evenement) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        const topFourEvenements = evenements.slice(0, 4);
+        // get the four events that are after today
+        const today = new Date();
+        const topFourEvenements = evenements.filter((evenement: Evenement) => new Date(evenement.date).getTime() >= today.getTime()).slice(0, 4);
 
         return topFourEvenements;
     } catch (error) {
@@ -140,9 +141,21 @@ export const getEvenementById = async (id: number) => {
 };
 
 // POST: Créer un nouvel événement
-export const createEvenement = async (evenement: any) => {
+export const createEvenement = async (evenement: Evenement) => {
     try {
-        const response = await api.post('/evenements', evenement);
+        const json = {
+            nom: evenement.nom,
+            date: evenement.date,
+            lieu: evenement.lieu,
+            commentaire: evenement.commentaire,
+            is_actuality: false,
+            organisateur: null,
+            media: [],
+            isActuality: false
+        }
+
+        const response = await api.post('/evenements', JSON.stringify(json));
+
         return response.data;
     } catch (error) {
         console.error('Erreur lors de la création de l\'événement:', error);
@@ -151,12 +164,23 @@ export const createEvenement = async (evenement: any) => {
 };
 
 // PUT: Mettre à jour un événement par ID
-export const updateEvenement = async (id: number, evenement: any) => {
+export const updateEvenement = async (evenement: Evenement) => {
     try {
-        const response = await api.put(`/evenements/${id}`, evenement);
+        const json = {
+            nom: evenement.nom,
+            date: evenement.date,
+            lieu: evenement.lieu,
+            commentaire: evenement.commentaire,
+            is_actuality: false,
+            organisateur: null,
+            media: [],
+            isActuality: false
+        }
+
+        const response = await api.put(`/evenements/${evenement.id}`, JSON.stringify(json));
         return response.data;
     } catch (error) {
-        console.error(`Erreur lors de la mise à jour de l'événement avec ID ${id}:`, error);
+        console.error(`Erreur lors de la mise à jour de l'événement avec ID ${evenement.id}:`, error);
         throw error;
     }
 };

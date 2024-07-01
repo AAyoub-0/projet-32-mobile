@@ -57,8 +57,8 @@ export const createReservation = async (reservation: Reservation): Promise<Reser
             reservation.dateRetour,
             [],
             "/api/statut_reservations/" + statutId,
-            reservation.association ? '/api/associations/' + reservation.association.id : null,
-            reservation.particulier ? '/api/particuliers/' + reservation.particulier.id : null
+            reservation.association != null ? '/api/associations/' + reservation.association.id : null,
+            reservation.particulier != null ? '/api/particuliers/' + reservation.particulier.id : null
         )
 
         const response = await api.post('/reservations', JSON.stringify(reservationCreation));
@@ -77,8 +77,8 @@ export const createReservation = async (reservation: Reservation): Promise<Reser
             response.data.dateRetour,
             response.data.reservationMateriels,
             response.data.statutReservation,
-            response.data.association,
-            response.data.particulier
+            response.data.association ? '/api/associations/' + response.data.association.id : null,
+            response.data.particulier ? '/api/particuliers/' + response.data.particulier.id : null
         );
 
     } catch (error) {
@@ -87,15 +87,63 @@ export const createReservation = async (reservation: Reservation): Promise<Reser
     }
 };
 
-export const getReservationsByUri = async (uri: string): Promise<ReservationCreation> => {
+export const patchReservation = async (reservation: ReservationCreation, id: number): Promise<ReservationCreation> => {
+    try {
+        let statutId = 0;
+        switch (reservation.statutReservation) {
+            case 'En attente':
+                statutId = 2;
+                break;
+            case 'En cours':
+                statutId = 2;
+                break;
+            case 'Terminée':
+                statutId = 3;
+                break;
+            case 'Supprimée':
+                statutId = 4;
+                break;
+            default:
+                statutId = 2;
+                break;
+        }
+        console.log('reservation', reservation);
+        const json = {
+            dateReservation: reservation.dateReservation,
+            dateRetour: reservation.dateRetour,
+            reservationMateriels: reservation.reservationMateriels,
+            statutReservation: '/api/statut_reservations/' + statutId,
+            association: reservation.association ? reservation.association : null,
+            particulier: reservation.particulier ? reservation.particulier : null
+        }
+        console.log('json:', json);
+
+        const response = await api.patch('/reservations/' + id, JSON.stringify(json), {
+            headers: {
+                'Content-Type': 'application/merge-patch+json'
+            }
+        });
+
+        return reservation;
+    } catch (error) {
+        console.error('Erreur lors de la modification de la réservation:', error);
+        throw error;
+    }
+}
+
+export const getReservationsByUri = async (uri: string): Promise<ReservationCreation | null> => {
     try {
         const response = await server.get(uri);
+
+        if(response.data.statutReservation.libelle === 'Supprimée'){
+            return null;
+        }
 
         const reservation = new ReservationCreation(
             response.data.dateReservation,
             response.data.dateRetour,
             response.data.reservationMateriels,
-            response.data.statutReservation,
+            response.data.statutReservation.libelle,
             response.data.association,
             response.data.particulier
         );

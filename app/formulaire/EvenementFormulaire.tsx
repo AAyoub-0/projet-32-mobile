@@ -2,6 +2,14 @@
 import { View, Text, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams, Stack } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+
+// services
+import { 
+  deleteEvenement, 
+  updateEvenement, 
+  createEvenement 
+} from "@/services/EvenementService";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -17,6 +25,8 @@ import { Evenement } from "@/models/Evenement";
 
 const EvenementFormulaire: React.FC = () => {
 
+    const navigation = useNavigation();
+
     const { parameter } = useLocalSearchParams();
 
     const [titre, setTitre] = useState<string>('Ajouter un événement');
@@ -25,6 +35,7 @@ const EvenementFormulaire: React.FC = () => {
     const [showDate, setShowDate] = useState(false);
     const [lieu, setLieu] = React.useState('');
     const [commentaire, setCommentaire] = React.useState('');
+    const [id, setId] = React.useState(0);
 
     const [loading, setLoading] = useState(false);
 
@@ -37,6 +48,7 @@ const EvenementFormulaire: React.FC = () => {
             setLieu(evenementParsed.lieu);
             setCommentaire(evenementParsed.commentaire);
             setTitre('Modifier un événement');
+            setId(evenementParsed.id);
         }
     }, []);
 
@@ -66,13 +78,52 @@ const EvenementFormulaire: React.FC = () => {
     const HandleDeleteAsync = async () => {
         setLoading(true);
         await new Promise(resolve => setTimeout(resolve, 2000));
-        setLoading(false);
+        try{
+          await deleteEvenement(id);
+          alert('Evénement supprimé avec succès');
+          navigation.goBack();
+        }
+        catch(error){
+          alert('Erreur lors de la suppression de l\'événement');
+        }
+        finally{
+          setLoading(false);
+        }
     }
 
     const HandleSaveAsync = async () => {
         setLoading(true);
+        if(!validateForm()) {setLoading(false); return;}
         await new Promise(resolve => setTimeout(resolve, 2000));
-        setLoading(false);
+        try{
+          if(titre === 'Ajouter un événement'){
+            await createEvenement(new Evenement(0, nom, date, lieu, commentaire, false));
+            alert('Evénement ajouté avec succès');
+            navigation.goBack();
+          } else {
+            await updateEvenement(new Evenement(id, nom, date, lieu, commentaire, false));
+            alert('Evénement modifié avec succès');
+          }
+        }
+        catch(error){
+          alert('Erreur lors de l\'enregistrement de l\'événement');
+        }
+        finally{
+          setLoading(false);
+        }
+    }
+
+    const validateForm = () => {
+        if(nom === '' && lieu === '' && commentaire === '') {alert('Veuillez remplir tous les champs obligatoires'); return false};
+
+        if(nom === '') {alert('Le nom de l\'événement est obligatoire'); return false};
+        if(lieu === '') {alert('Le lieu de l\'événement est obligatoire'); return false};
+        if(commentaire === '') {alert('Le commentaire de l\'événement est obligatoire'); return false};
+
+        if (date === null) {alert('La date de l\'événement est obligatoire'); return false}
+        if(date <= new Date()) {alert('La date de l\'événement doit être supérieure à la date actuelle'); return false}
+
+        return true;
     }
 
     return (
@@ -91,7 +142,9 @@ const EvenementFormulaire: React.FC = () => {
                 <Text style={[Texts.textTitle, Texts.textBold, {maxWidth: '70%'}]} >
                     {titre}
                 </Text>
-                <ActionButton text="" icon="trash" type="danger" onPress={HandleDeleteAsync} isLoading={loading} />
+                {titre === 'Modifier un événement' && (
+                  <ActionButton text="" icon="trash" type="danger" onPress={HandleDeleteAsync} isLoading={loading} />
+                )}
               </View>
               
               <Line margin={20} width={'100%'} orientation="horizontal" backgroundColor={Colors.colorGray} rounded={false} />

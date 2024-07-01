@@ -26,8 +26,20 @@ export class Evenement {
         const month = new Intl.DateTimeFormat('fr-FR', options).format(this.date);
         const stringMonth =  month.charAt(0).toUpperCase() + month.slice(1);
 
-        if(stringMonth.length > 7) {
-            return stringMonth.slice(0, 3) + '.';
+        if(stringMonth.length > 6) {
+            let i = 0;
+
+            switch(stringMonth) {
+                case 'Janvier': i = 3; break;
+                case 'Février': i = 3; break;
+                case 'Juillet': i = 4; break;
+                case 'Septembre': i = 4; break;
+                case 'Octobre': i = 3; break;
+                case 'Novembre': i = 3; break;
+                case 'Décembre': i = 3; break;
+            }
+
+            return stringMonth.slice(0, i) + '.';
         }
         return stringMonth;
     }

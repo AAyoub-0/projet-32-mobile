@@ -16,4 +16,15 @@ export class Particulier {
         this.reservations = reservations;
         this.email = email;
     }
+
+    static fromJson(data: any): Particulier {
+        return new Particulier(
+            data.id,
+            data.nom,
+            data.prenom,
+            data.telephone,
+            data.reservations,
+            data.email
+        );
+    }
 }
