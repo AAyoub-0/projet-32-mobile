@@ -1,6 +1,3 @@
-import { Reservation } from './Reservation';
-import { Utilisateur } from './Utilisateur';
-
 export class Association {
     id: number;
     nom: string;

@@ -1,22 +1,15 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
+import React from 'react';
 import Octicons from '@expo/vector-icons/Octicons';
-import { Stack, Link  } from "expo-router";
+import { Stack, Link, router  } from "expo-router";
 
 // constants
 import * as Colors from '@/constants/Colors';
 
 // components
 import Box from '@/components/Box';
-
-// models
-import { Evenement } from '@/models/Evenement';
-import { Materiel } from "@/models/Materiel";
-import { Reservation } from "@/models/Reservation";
-import { Contact } from "@/models/Contact";
 
 const Gestion = () => {
 
@@ -39,7 +32,7 @@ const Gestion = () => {
                     ),
                     headerRight: () => (
                         <View style={{ flexDirection: 'row', width: 100, justifyContent: 'flex-end', marginRight: 20 }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => router.push('/utilisateur/Profile')}>
                                 <Octicons name="feed-person" size={24} color={Colors.colorBlack} />
                             </TouchableOpacity>
                         </View>

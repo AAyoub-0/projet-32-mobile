@@ -29,7 +29,7 @@ const MessageComponent: React.FC<Props> = ({ contact, onPress }) => {
             </View>
             <View style={{padding: 16}}>
                 <Text style={[Texts.textBody, Texts.textBold, { color: Colors.colorBlackLight }]}>
-                    {contact.objet}
+                    {contact.email}
                 </Text>
                 
                 <Text style={[Texts.textBodySmall, { color: Colors.colorBlackLight }]}>

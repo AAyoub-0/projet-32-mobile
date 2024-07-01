@@ -2,19 +2,13 @@ import { View, Text, TouchableOpacity, ColorValue } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useState, useEffect } from "react";
 
-// services
-import { getAssociationByUri } from "@/services/AssociationService";
-import { getParticulierByUri } from "@/services/ParticulierService";
-
 import * as Texts from '../constants/Texts';
 import * as Colors from '../constants/Colors';
 
 import Chip from './Chip';
 import Line from './Line';
 
-import { Reservation } from '../models/Reservation';
 import { ReservationMateriel } from '../models/ReservationMateriel';
-import { Materiel } from '../models/Materiel';
 import { Association } from "@/models/Association";
 import { Particulier } from "@/models/Particulier";
 

@@ -1,5 +1,5 @@
 // react-native
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Button, Image } from "react-native";
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Button, Image } from "react-native";
 import React, { useState, useEffect } from 'react';
 import Checkbox from 'expo-checkbox';
 import { useLocalSearchParams, Stack } from 'expo-router';

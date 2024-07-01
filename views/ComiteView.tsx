@@ -1,5 +1,5 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 
 // constants
 import * as Colors from '../constants/Colors';

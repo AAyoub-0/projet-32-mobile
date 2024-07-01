@@ -2,9 +2,8 @@
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
 import Octicons from '@expo/vector-icons/Octicons';
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 import { useIsFocused } from "@react-navigation/native";
 
 // service
@@ -56,7 +55,9 @@ const Calendrier = () => {
                     ),
                     headerRight: () => (
                         <View style={{ flexDirection: 'row', width: 100, justifyContent: 'flex-end', marginRight: 20 }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => {
+                                    router.push('/utilisateur/Profile');
+                                }}>
                                 <Octicons name="feed-person" size={24} color={Colors.colorBlack} />
                             </TouchableOpacity>
                         </View>

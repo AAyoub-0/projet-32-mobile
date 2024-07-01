@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollVie
 import {Picker} from '@react-native-picker/picker';
 import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams, Stack } from 'expo-router';
-import Checkbox from 'expo-checkbox';
 import { useNavigation } from 'expo-router';
 
 // services
@@ -15,11 +14,9 @@ import * as Texts from '@/constants/Texts';
 
 // components
 import Line from '@/components/Line';
-import TextInputFlat from '@/components/TextInputFlat';
 import ActionButton from "@/components/ActionButton";
 
 // models
-import { Reservation } from "@/models/Reservation";
 import { ReservationMateriel } from "@/models/ReservationMateriel";
 import { Association } from "@/models/Association";
 import { Particulier } from "@/models/Particulier";

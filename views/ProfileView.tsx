@@ -1,6 +1,10 @@
 // react-native
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import { View, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { router } from "expo-router";
+
+// services
+import authService from '@/services/UtilisateurService';
 
 // components
 import TextInputFlat from '../components/TextInputFlat';
@@ -12,11 +16,19 @@ import * as Texts from '../constants/Texts';
 const ProfilView = () => {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [user, setUser] = useState({});
+
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const token = await authService.getToken();
+        };
+
+        checkLoginStatus();
+    }, []);
 
     const HandleDisconnectAsync = async () => {
-      setIsLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsLoading(false);
+        await authService.logout();
+        router.push('/accueil');
     }
 
     return (

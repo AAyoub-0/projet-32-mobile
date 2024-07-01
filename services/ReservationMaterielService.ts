@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { ReservationMateriel } from '@/models/ReservationMateriel';
-import { Reservation } from '@/models/Reservation';
-import { Materiel } from '@/models/Materiel';
 import { getMaterielByUri } from './MaterielService';
 import { getReservationsByUri } from './ReservationService';
-import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 const API_URL = 'http://192.168.1.83:8000/api';
 const SERVER_URL = 'http://192.168.1.83:8000'

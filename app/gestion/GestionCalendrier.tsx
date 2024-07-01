@@ -1,7 +1,6 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
 import { Stack, router } from "expo-router";
 import { useIsFocused } from '@react-navigation/native';
 

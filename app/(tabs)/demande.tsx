@@ -1,8 +1,6 @@
 // react-native
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, ActivityIndicator, Modal } from "react-native";
-import { useHeaderHeight } from '@react-navigation/elements';
 import React, { useState, useEffect } from 'react';
-import { FontAwesome } from '@expo/vector-icons';
 import Octicons from '@expo/vector-icons/Octicons';
 import { Stack, router } from "expo-router";
 
@@ -14,16 +12,11 @@ import * as Colors from '@/constants/Colors';
 import * as Texts from '@/constants/Texts';
 
 // components
-import DernieresActualite from '@/components/DerniereActualite';
-import ActualiteFuture from '@/components/ActualiteFuture';
-import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
 import MaterielComponent from "@/components/MaterielComponent";
 
 // models
-import { Evenement } from '@/models/Evenement';
 import { Materiel } from "@/models/Materiel";
-import { SafeAreaView } from "react-native-safe-area-context";
 import ActionButton from "@/components/ActionButton";
 
 const Demande = () => {
@@ -76,7 +69,7 @@ const Demande = () => {
                     ),
                     headerRight: () => (
                         <View style={{ flexDirection: 'row', width: 100, justifyContent: 'flex-end', marginRight: 20 }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => router.push('/utilisateur/Profile')}>
                                 <Octicons name="feed-person" size={24} color={Colors.colorBlack} />
                             </TouchableOpacity>
                         </View>

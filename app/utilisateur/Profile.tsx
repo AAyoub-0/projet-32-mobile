@@ -1,34 +1,61 @@
 // react-native
-import { View, Text, TouchableOpacity, Platform, KeyboardAvoidingView, ScrollView, StyleSheet, Image, Animated, Easing } from "react-native";
+import { View, Platform, KeyboardAvoidingView, ScrollView, StyleSheet, Animated } from "react-native";
 import { useHeaderHeight } from '@react-navigation/elements';
-import { FontAwesome } from "@expo/vector-icons";
-import {Picker} from '@react-native-picker/picker';
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocalSearchParams, Stack } from 'expo-router';
-import Checkbox from 'expo-checkbox';
+import { Stack } from 'expo-router';
+import { useIsFocused } from '@react-navigation/native';
+
+// services
+import authService from '@/services/UtilisateurService';
 
 // constants
 import * as Colors from '@/constants/Colors';
-import * as Texts from '@/constants/Texts';
 
 // views
 import ConnexionView from '@/views/ConnexionView';
 import ProfileView from '@/views/ProfileView';
 
-// components
-import Line from '@/components/Line';
-import TextInputFlat from '@/components/TextInputFlat';
-
-// models
-import { Reservation } from "@/models/Reservation";
-import ActionButton from "@/components/ActionButton";
-
 const Profile = () => {
 
     const headerHeight = useHeaderHeight();
+    const isFocused = useIsFocused();
 
     const rotation = useRef(new Animated.Value(0)).current;
     const [isLoading, setIsLoading] = useState(false);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const token = await authService.getToken();
+      setIsLoggedIn(!!token);
+      console.log('Token:', token);
+    };
+
+    if (isFocused) {
+      checkLoginStatus();
+    }
+
+    const handleLogin = (data: { email: string; token: string }) => {
+      console.log('User logged in:', data);
+      setIsLoggedIn(true);
+    };
+
+    const handleLogout = () => {
+      console.log('User logged out');
+      setIsLoggedIn(false);
+    };
+
+    authService.on('login', handleLogin);
+    authService.on('logout', handleLogout);
+
+    // Cleanup listeners on unmount
+    return () => {
+      authService.off('login', handleLogin);
+      authService.off('logout', handleLogout);
+    };
+  }, [isFocused]);
+
 
     const SubmitAsync = async () => {
       setIsLoading(true);
@@ -50,8 +77,8 @@ const Profile = () => {
             <View style={{ paddingTop: headerHeight, justifyContent: 'center', flex: 1 }}>
                 <ScrollView style={[styles.container]} alwaysBounceVertical={false} bounces={false}>
 
-                  {/* <ConnexionView /> */}
-                  <ProfileView />
+                    {!isLoggedIn && (<ConnexionView />)} 
+                    {isLoggedIn && (<ProfileView />)}
 
                   <View style={{ marginBottom: 80 }} />
 

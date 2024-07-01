@@ -1,7 +1,11 @@
 // react-native
-import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { FontAwesome } from '@expo/vector-icons';
+import { StyleSheet, View, Text, KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator } from "react-native";
 import { Stack, router } from "expo-router";
+import React,{ useEffect } from "react";
+import { useIsFocused } from "@react-navigation/native";
+
+// services
+import { getContacts } from "@/services/ContactService";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -10,7 +14,6 @@ import * as Texts from '@/constants/Texts';
 // components
 import Line from '@/components/Line';
 import TextInputFlat from '@/components/TextInputFlat';
-import ActualiteFuture from "@/components/ActualiteFuture";
 import MessageComponent from "@/components/MessageComponent";
 
 // models
@@ -18,12 +21,31 @@ import { Contact } from "@/models/Contact";
 
 const GestionContact = () => {
 
-    const message = new Contact(1, 'Dupont', 'Jean', 'Besoin spécifique pour une fête', 'jeandupont.assoc@gmail.com', 'Bonjour je souhaiterais louer du matériel pour une fête de famille');
-    const message2 = new Contact(2, 'Durand', 'Paul', 'Demande de renseignements', 'paul.d@sfr.fr', 'Bonjour, je souhaiterais avoir des informations sur les tarifs de location de matériel');
-    const message3 = new Contact(3, 'Martin', 'Marie', 'Demande de réservation', 'martin.marie@gmail.com', 'Bonjour, je souhaiterais réserver du matériel pour une fête de famille');
-    const message4 = new Contact(4, 'Lefevre', 'Lucie', 'Demande de devis', 'l.lefevre@yahoo.com', 'Bonjour, je souhaiterais un devis pour une location de matériel');
+    const isFocused = useIsFocused();
 
-    const messages = [message, message2, message3, message4];
+    const [messages, setMessages] = React.useState<Contact[]>([]);
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+    useEffect(() => {
+        if(isFocused){
+            setIsLoading(true);
+            getContacts().then((data) => {
+                setMessages(data);
+            }).catch((error) => {
+                console.error('Erreur lors de la récupération des contacts:', error);
+            }).finally(() => {
+                setIsLoading(false);
+            });
+        }
+    }, [isFocused]);
+
+    if(isLoading){
+        return (
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator size="large" color={Colors.colorPrimary} />
+            </View>
+        )
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

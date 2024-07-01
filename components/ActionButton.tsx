@@ -1,11 +1,9 @@
-import { StyleSheet, TouchableOpacity, Text, Animated, Easing, StyleProp, ColorValue } from "react-native";
+import { TouchableOpacity, Text, Animated, Easing, ColorValue } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import React, { useEffect, useRef } from 'react';
 
 import * as Texts from '@/constants/Texts';
 import * as Colors from '@/constants/Colors';
-import { TextStyle } from "@expo/html-elements/build/primitives/Text";
-import { ColorProperties } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 type Props = {
     text: string;
