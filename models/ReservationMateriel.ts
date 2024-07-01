@@ -1,27 +1,29 @@
-import { Association } from "./Association";
-import { Particulier } from "./Particulier";
 import { Materiel } from "./Materiel";
-import { Reservation } from "./Reservation";
+import { ReservationCreation } from "./ReservationCreation";
 
 export class ReservationMateriel {
     id: number;
-    reservation: Reservation;
+    reservation: ReservationCreation;
     materiel: Materiel;
     quantite: number;
 
-    constructor(id: number, reservation: Reservation, materiel: Materiel, quantite: number) {
+    constructor(id: number, reservation: ReservationCreation, materiel: Materiel, quantite: number) {
         this.id = id;
         this.reservation = reservation;
         this.materiel = materiel;
         this.quantite = quantite;
     }
 
-    static fromJson(json: any): Reservation {
-        const jsonParsed = JSON.parse(json as string);
-        return jsonParsed as Reservation;
+    static fromJson(json: any): ReservationMateriel {
+        return new ReservationMateriel(
+            json.id,
+            json.reservation,
+            json.materiel,
+            json.quantite
+        );
     }
 
-    static toJson(reservation: Reservation): string {
+    static toJson(reservation: ReservationMateriel): string {
         return JSON.stringify(reservation);
     }
 }

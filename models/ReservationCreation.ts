@@ -1,4 +1,5 @@
 export class ReservationCreation {
+    id?: number | undefined;
     dateReservation: Date;
     dateRetour: Date;
     reservationMateriels: [];
@@ -29,5 +30,9 @@ export class ReservationCreation {
 
     static toJson(reservationCreation: ReservationCreation): string {
         return JSON.stringify(reservationCreation);
+    }
+
+    setId(id: number): void {
+        this.id = id;
     }
 }

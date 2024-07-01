@@ -1,6 +1,10 @@
 // react-native
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from "react-native";
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, ActivityIndicator } from "react-native";
 import { Stack, router } from "expo-router";
+import React, { useState, useEffect } from "react";
+
+// services 
+import { getReservationMateriels } from "@/services/ReservationMaterielService";
 
 // constants
 import * as Colors from '@/constants/Colors';
@@ -14,6 +18,7 @@ import ReservationComponent from "@/components/ReservationComponent";
 // models
 import { Reservation } from "@/models/Reservation";
 import { Materiel } from "@/models/Materiel";
+import { StatutReservationEnum } from "@/models/StatutReservationEnum";
 
 
 const GestionReservation = () => {
@@ -25,13 +30,36 @@ const GestionReservation = () => {
     const materiel5 = new Materiel(5, 'Camion', 1, false, 4, 2, 'https://m.media-amazon.com/images/I/61pCWRdyhbL._AC_UF1000,1000_QL80_.jpg');
     const nullMateriel = new Materiel(0, '', 0, false, 0, 0, '');
 
-    const reservation = new Reservation(1, new Date(), new Date(), materiel, 1, 'En attente', null, null);
-    const reservation2 = new Reservation(2, new Date(), new Date(), materiel2, 3, 'En attente', null, null);
-    const reservation3 = new Reservation(3, new Date(), new Date(), materiel3, 20, 'Terminée', null, null);
-    const reservation4 = new Reservation(4, new Date(), new Date(), materiel4, 2, 'En attente', null, null);
-    const reservation5 = new Reservation(5, new Date(), new Date(), materiel5, 1, 'Terminée', null, null);
+    const reservation = new Reservation(1, new Date(), new Date(), materiel, 1, StatutReservationEnum.EN_ATTENTE, null, null);
+    const reservation2 = new Reservation(2, new Date(), new Date(), materiel2, 3, StatutReservationEnum.EN_ATTENTE, null, null);
+    const reservation3 = new Reservation(3, new Date(), new Date(), materiel3, 20, StatutReservationEnum.TERMINEE, null, null);
+    const reservation4 = new Reservation(4, new Date(), new Date(), materiel4, 2, StatutReservationEnum.EN_ATTENTE, null, null);
+    const reservation5 = new Reservation(5, new Date(), new Date(), materiel5, 1, StatutReservationEnum.TERMINEE, null, null);
 
     const reservations = [reservation, reservation2, reservation3, reservation4, reservation5];
+    
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        try{
+            getReservationMateriels().then(reservations => {
+                console.log(reservations);
+            });
+        }
+        catch(error){
+            console.error(error);
+        }
+        finally{
+            setLoading(false);
+        }
+        
+    });
+
+    if(loading) return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" color={Colors.colorPrimary} />
+        </View>
+    );
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

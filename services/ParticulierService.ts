@@ -13,8 +13,30 @@ const api = axios.create({
 });
 
 
-export const createParticulier = async (particulier: Particulier): Promise<Particulier> => {
+const getParticulierByEmail = async (email: string): Promise<Particulier> => {
     try {
+        const response = await api.get('/particuliers?page=1&email=' + email);
+        return new Particulier(
+            response.data[0].id,
+            response.data[0].nom,
+            response.data[0].prenom,
+            response.data[0].telephone,
+            response.data[0].reservations,
+            response.data[0].email,
+        );
+    } catch (error) {
+        console.error('Erreur lors de la récupération du particulier:', error);
+        throw error;
+    }
+}
+
+export const createParticulierIfNotExists = async (particulier: Particulier): Promise<Particulier> => {
+    try {
+        const particulierExist = await getParticulierByEmail(particulier.email);
+        if (particulierExist) {
+            return particulierExist;
+        }
+
         const json = {
             nom: particulier.nom,
             prenom: particulier.prenom,
